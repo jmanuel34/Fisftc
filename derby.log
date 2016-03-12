@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Thu Mar 10 11:53:49 CET 2016:
+ Iniciando instancia a816c00e-0153-6029-3f33-00000eb3e5c0 de Derby, versión The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): 
+en el directorio de base de datos /Users/Damian/Dropbox/Práctica FIS/Fisftc/.\DB\Derby.DB con el cargador de clases sun.misc.Launcher$AppClassLoader@4b67cf4d
+Cargado desde file:/Users/Damian/Downloads/db-derby-10.12.1.1-lib/lib/derby.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_60-b27
+user.dir=/Users/Damian/Dropbox/Práctica FIS/Fisftc
+os.name=Mac OS X
+os.arch=x86_64
+os.version=10.11.3
+derby.system.home=null
+Cargador de clases de base de datos iniciado - derby.database.classpath=''
