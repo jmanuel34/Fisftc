@@ -5,9 +5,16 @@ import java.util.Scanner;
 public class Interfaz {
     	Scanner sc = new Scanner(System.in);
 	int opcionMenu;
+        Sentencias sen;
+        String rs;
 
     public Interfaz () {
-         mostrarInterfaz();
+         sen = new Sentencias(); 
+        sen.montarBase();
+        sen.insertarDatosIniciales();
+        sen.listarTablas();
+        mostrarInterfaz();
+ 
         
     }
 
@@ -26,6 +33,8 @@ public class Interfaz {
 		case 1:
 		    System.out.println("------------en progreso------------");
 		    //funcion mostrar lista
+ //                   sen.listarTablas();
+                    
 		    break;
 		case 2:
 		    int opcion2_1,

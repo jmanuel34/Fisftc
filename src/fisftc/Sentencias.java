@@ -20,12 +20,12 @@ public class Sentencias {
     private Conexion cn;
     private ResultSet rs;
     private Scanner scan;
-
+    String sql;
     public Sentencias() {
         cn = new Conexion();
         scan = new Scanner(System.in);
         if(cn.crearDB()){
-            this.motarBase();
+            this.montarBase();
         }
     }
 
@@ -34,7 +34,7 @@ public class Sentencias {
         cn.close();
     }
 
-    public void motarBase() {
+    public void montarBase() {
 
         if (!this.buscarTabla("tfg")) {
             if (!this.buscarTabla("profesor")) {
@@ -72,8 +72,21 @@ public class Sentencias {
                             + "  notafinal integer,"
                             + "  primary key (idtfg)"
                             + ")");
+                    cn.noSelect("INSERT INTO tfg " +
+                            "VALUES ('1', 'Campo título', 'Este es el campo de la descripción', '3', '2016-03-08', '2016-03-23', '9.6')") ;
+                    
                 }
             }
+        }
+        rs = cn.Select("Select * from tfg");
+
+        try {
+            while (rs.next()) {
+                System.out.println("IdTfg" + rs.getString("idTfg"));
+                System.out.println ("Titulo " + rs.getString("titulo"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -85,10 +98,23 @@ public class Sentencias {
      *
      * @return
      */
+    
+    public void insertarDatosIniciales() {
+        cn.noSelect("INSERT INTO tfg " +
+                            "VALUES ('1', 'Campo título', 'Este es el campo de la descripción', '3', '2016-03-08', '2016-03-23', '9.6')") ;
+   
+        cn.noSelect("INSERT INTO tfg VALUES " +
+                "'1', 'Campo título', 'Este es el campo de la descripción', '3', '2016-03-08', '2016-03-23', '9.6')");
+        
+        cn.noSelect("INSERT INTO tfg " +
+                "(`titulo`, `descripcion`, `convocatoria`, `fechaRegistro`, `fechaDefensa`, `notaFinal`)" +
+                "VALUES ('titulo 2', 'Description field', '1', '2016-03-08', '2016-03-23', '5.03')");
+    }
+    
     public boolean ejemplo2() {
         boolean exito = false;
 
-        rs = cn.Select("Select* from clientes");
+        rs = cn.Select("Select * from clientes");
         exito = true;
 
         try {
