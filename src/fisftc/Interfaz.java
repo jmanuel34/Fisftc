@@ -11,7 +11,7 @@ public class Interfaz {
     public Interfaz () {
          sen = new Sentencias(); 
          sen.montarBase();
- //        sen.insertarDatosIniciales();
+         mostrarInterfaz();
     }
 
     public void mostrarInterfaz() {
@@ -22,6 +22,7 @@ public class Interfaz {
 	    System.out.println("    3- Borrar un TFG de la base de datos.");
 	    System.out.println("    4- Buscar información de un TFG en la base de datos.");
 	    System.out.println("    5- Modificar un TFG en la base de datos.");
+            System.out.println("    33- Datos de prueba");
 	    System.out.println("    6- Finalizar.");
 	    System.out.print("Opción deseada: ");
 	    opcionMenu = sc.nextInt();
@@ -30,12 +31,10 @@ public class Interfaz {
 		    System.out.println("------------en progreso------------");
 		    //funcion mostrar lista
  //                   sen.listarTablas();
-                    
+                                    
 		    break;
 		case 2:                  
-
                     sen.listarTablas();
-                    mostrarInterfaz();
 		    int opcion2_1,
 		     opcion2_2,
 		     opcion2_3;
@@ -186,6 +185,16 @@ public class Interfaz {
 		case 6:
 		    System.out.println("finalizando la aplicacion");
 		    break;
+                case 33:
+                    System.out.println( "Secuencia de acciones iniciales.\n"
+                            + "1.- Montar base de datos\n"
+                            + "2.- Insertar ejemplos de registros.\n"
+                            + "3.- Listar los ejemplos");
+                    System.out.println();
+                    sen.insertarDatosIniciales();
+                    sen.listarDatosIniciales(); 
+                    break;
+                    
 		default:
 		    System.out.println("Opción no valida.");
 		    break;
