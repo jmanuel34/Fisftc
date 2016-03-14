@@ -10,12 +10,8 @@ public class Interfaz {
 
     public Interfaz () {
          sen = new Sentencias(); 
-        sen.montarBase();
-        sen.insertarDatosIniciales();
-        sen.listarTablas();
-        mostrarInterfaz();
- 
-        
+         sen.montarBase();
+ //        sen.insertarDatosIniciales();
     }
 
     public void mostrarInterfaz() {
@@ -36,7 +32,10 @@ public class Interfaz {
  //                   sen.listarTablas();
                     
 		    break;
-		case 2:
+		case 2:                  
+
+                    sen.listarTablas();
+                    mostrarInterfaz();
 		    int opcion2_1,
 		     opcion2_2,
 		     opcion2_3;

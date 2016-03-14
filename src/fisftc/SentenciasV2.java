@@ -81,8 +81,8 @@ public class Sentencias {
         */
         cn.noSelect("INSERT INTO profesor (nombre)" +
                            "VALUES ('pepe')") ;
-  //      cn.noSelect("INSERT INTO tfg " +
-  //                          "VALUES (, 'Campo título', 'Este es el campo de la descripción', '3', '2016-03-08', '2016-03-23', '9.6')") ;
+        cn.noSelect("INSERT INTO tfg " +
+                            "VALUES (, 'Campo título', 'Este es el campo de la descripción', '3', '2016-03-08', '2016-03-23', '9.6')") ;
         rs = cn.Select("Select * from profesor");
 
         try {
