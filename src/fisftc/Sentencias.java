@@ -127,6 +127,7 @@ public class Sentencias {
 
     public ResultSet obtenerTFGDisponibles() {
         if (this.conectar()) {
+            // currarlo
             rs = cn.Select("select * from " + TFG.tabla);
         }
         return rs;

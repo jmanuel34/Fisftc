@@ -38,12 +38,7 @@ public class Interfaz {
             }
             System.out.println("    Seleccione una opcion:  ");
             /*CAPTURAR*/
-            Validacion valido = new Validacion();
-            valido = sc.nextLine();
-            if (valido.getString(1, st))
-            if (valido.getInt()) {
-                
-            }
+            
             switch (opcionMP) {
                 case 1: {/*MOSTRAR TFG*/
                     ArrayList<TFG> lista;
