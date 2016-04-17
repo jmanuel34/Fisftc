@@ -5,6 +5,8 @@
  */
 package fisftc;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author jm
@@ -14,11 +16,11 @@ public class Fisftc {
     /**
      * @param args the command line arguments
      */
-    public Fisftc() {
+    public Fisftc() throws SQLException {
       Interfaz interfaz = new Interfaz();  
     }
    
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         // TODO code application logic here
         Fisftc aplicacion = new Fisftc();
         

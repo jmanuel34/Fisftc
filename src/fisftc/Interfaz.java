@@ -1,207 +1,428 @@
 package fisftc;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Interfaz {
+        protected Sentencias sen;
     	Scanner sc = new Scanner(System.in);
 	int opcionMenu;
-        Sentencias sen;
         String rs;
 
-    public Interfaz () {
+    public Interfaz () throws SQLException {
          sen = new Sentencias(); 
          sen.montarBase();
          mostrarInterfaz();
     }
 
-    public void mostrarInterfaz() {
-	System.out.println("Iniciando aplicación");
-	do {
-	    System.out.println("    1- Mostrar lista TFG disponibles.");
-	    System.out.println("    2- Añadir un TFG a la base de datos.");
-	    System.out.println("    3- Borrar un TFG de la base de datos.");
-	    System.out.println("    4- Buscar información de un TFG en la base de datos.");
-	    System.out.println("    5- Modificar un TFG en la base de datos.");
-            System.out.println("    33- Datos de prueba");
-	    System.out.println("    6- Finalizar.");
-	    System.out.print("Opción deseada: ");
-	    opcionMenu = sc.nextInt();
-	    switch (opcionMenu) {
-		case 1:
-		    System.out.println("------------en progreso------------");
-		    //funcion mostrar lista
- //                   sen.listarTablas();
-                                    
-		    break;
-		case 2:                  
-                    sen.listarTablas();
-		    int opcion2_1,
-		     opcion2_2,
-		     opcion2_3;
-		    boolean otraVez2 = true;
-		    boolean profCorrecto = false;
-		    boolean alumnoCorrecto = false;
-		    do {
-			do {
-			    System.out.println("Como es el profesor:");
-			    System.out.println("    1- Es un profesor nuevo en la base de datos.");
-			    System.out.println("    2- Es un profesor ya existente en la base de datos.");
-			    System.out.print("Opción deseada: ");
-			    opcion2_1 = sc.nextInt();
-			    switch (opcion2_1) {
-				case 1:
-				    //constructor profesor;
-				    profCorrecto = true;
-				    break;
-				case 2:
-				    //buscar profesor en base de datos con datos nombre, apellidos y despacho
-				    /* String nombre;
-				     String apellidos;
-				     String despacho;
-				     System.out.println("Datos del profesor. (nombre, apellidos , despacho)");
-				     System.out.println("    Nombre:");
-				     nombre = sc.next();
-				     System.out.println("    Apellidos:");
-				     apellidos = sc.next();
-				     System.out.println("    Despacho:");
-				     despacho = sc.next();*/
+ public void menuAltas() throws SQLException {
+     int opcion = -1;     
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println();
+        System.out.println();
+        System.out.println(" |---------------- 1.- MENU DE ALTAS --------------|");
+        do {
 
-				    //o se puede hacer con una lista de profesores existentes
-				    profCorrecto = true;
-				    break;
-				default:
-				    profCorrecto = false;
-				    System.out.println("Opción no valida.");
-				    break;
-			    }
-			} while (!profCorrecto);
-			do {
-			    System.out.println("El profesor dispone de un alumno interesado:");
-			    System.out.println("    1- Si.");
-			    System.out.println("    2- No.");
-			    opcion2_2 = sc.nextInt();
-			    switch (opcion2_2) {
-				case 1:
-				    //obtener datos del alumno y construir o que se pidan los datos en el constructor de alumnos
-				    /* String nombre;
-				     String apellidos;
-				     String matricula;
-				     System.out.println("Datos del alumno. (nombre, apellidos , matricula)");
-				     System.out.println("    Nombre:");
-				     nombre = sc.next();
-				     System.out.println("    Apellidos:");
-				     apellidos = sc.next();
-				     System.out.println("    matricula:");
-				     matricula = sc.next();
-				     --- constructor alumno ---
-				     */
-
-				    //constructor TFG con parametros de alumno
-				    //    por ej--> TFG(profesor,alumno) y que dentro se pidan el nombre y la descripcion del TFG
-				    alumnoCorrecto = true;
-				    break;
-				case 2:
-				    //constructor TFG sin parametros de alumno
-				    //    por ej--> TFG(profesor) y que dentro se pidan el nombre y la descripcion del TFG
-				    alumnoCorrecto = true;
-				    break;
-				default:
-				    alumnoCorrecto = false;
-				    System.out.println("Opción no valida.");
-				    break;
-			    }
-			} while (!alumnoCorrecto);
-			System.out.println("Quieres añadir mas TFG:");
-			System.out.println("    1- Si.");
-			System.out.println("    2- No.");
-			opcion2_3 = sc.nextInt();
-			switch (opcion2_3) {
-			    case 1:
-				otraVez2 = false;
-				break;
-			    case 2:
-				otraVez2 = true;
-				break;
-			    default:
-				otraVez2 = false;
-				System.out.println("Opción no valida.");
-				break;
-			}
-		    } while (!otraVez2);
-
-		    break;
-		case 3:
-		    System.out.println("------------en progreso------------");
-		    //funcion borrar un TFG
-		    break;
-		case 4:
-		    System.out.println("------------en progreso------------");
-		    //funcion buscar TFG
-		    break;
-		case 5:
-		    int opcion5_1,opcion5_2;
-		    boolean modificoCorrecto = false;
-		    boolean otraVez5 = false;
-		    do {
-			do {
-			    System.out.println("Que modificacion quieres realizar:");
-			    System.out.println("    1- Añadir alumno.");
-			    System.out.println("    2- Borrar alumno.");
-			    System.out.print("Opción deseada: ");
-			    opcion5_1 = sc.nextInt();
-			    switch (opcion5_1) {
-				case 1:
-				    //pedir datos del TFG al que hay que añadir alumno, pedir datos del alumno a añadir y añadirlo;
-				    modificoCorrecto = true;
-				    break;
-				case 2:
-				    //pedir datos del TFG al que hay que borrar alumno, poner el apartado alumno a null;
-				    modificoCorrecto = true;
-				    break;
-				default:
-				    modificoCorrecto = false;
-				    System.out.println("Opción no valida.");
-				    break;
-			    }
-			} while (!modificoCorrecto);
-			System.out.println("Quieres modificar mas TFG:");
-			System.out.println("    1- Si.");
-			System.out.println("    2- No.");
-			opcion5_2 = sc.nextInt();
-			switch (opcion5_2) {
-			    case 1:
-				otraVez5 = false;
-				break;
-			    case 2:
-				otraVez5 = true;
-				break;
-			    default:
-				otraVez5 = false;
-				System.out.println("Opción no valida.");
-				break;
-			}
-		    } while (!otraVez5);
-		    break;
-		case 6:
-		    System.out.println("finalizando la aplicacion");
-		    break;
-                case 33:
-                    System.out.println( "Secuencia de acciones iniciales.\n"
-                            + "1.- Montar base de datos\n"
-                            + "2.- Insertar ejemplos de registros.\n"
-                            + "3.- Listar los ejemplos");
-                    System.out.println();
-                    sen.insertarDatosIniciales();
-                    sen.listarDatosIniciales(); 
+            System.out.println("    1.- Alta Profesor.");
+            System.out.println("    2.- Alta Alumno.");
+            System.out.println("    3.- Alta TFG.");    
+            System.out.println("");
+            System.out.println("");
+            System.out.println();
+            System.out.println("    0- Finalizar.");
+            System.out.print("Opción deseada: ");
+            opcion = sc.nextInt();
+        switch (opcion) {
+                case 1:
+                    altaProfesor();
                     break;
-                    
-		default:
-		    System.out.println("Opción no valida.");
-		    break;
-	    }
-
-	} while (opcionMenu != 6);
-
+                case 2:
+                    altaAlumno();
+                    break;
+                case 3:
+//                    altaTfg();                   
+                    break;
+                default:
+                    break;
+            }
+        } while (opcionMenu != 0);
+    }
+    
+    private void altaProfesor() throws SQLException  {
+        boolean result;
+        Scanner sc = new Scanner(System.in);
+        String nombre, ape1, ape2, email;
+        int desp = 0;
+            System.out.println("******NUEVO PROFESOR******");
+            System.out.print("Introduce el nombre del profesor: ");
+            nombre = sc.nextLine();
+            System.out.print("Introduce el primer apellido: ");
+            ape1 = sc.nextLine();
+            System.out.print("Introduce el segundo apellido: ");
+            ape2 = sc.nextLine();
+            System.out.print("Introduce el email: ");
+            email = sc.nextLine();
+            System.out.print("Introduce el número de despacho(4 dígitos): ");
+            desp = sc.nextInt();
+            // Comprobar que el profesor no existe
+            result = sen.comprobarProfesor(email);
+            if (!result) {
+                sen.insertarProfesor(nombre, ape1, ape2, email, desp);
+                System.out.println ("Profesor insertado correctamente. ");
+            }
+            else {
+                System.out.println("!!! Error en la inserción de profesor. ");
+                System.out.println("!!! El profesor ya existe. ");
+            }
     }
 
+    private void altaAlumno() throws SQLException {
+        boolean result;
+        Scanner sc = new Scanner(System.in);
+        String nombre, ape1, ape2, email;
+        String numMat;
+        boolean repetido = false;
+        boolean continuar = true;
+        String opcion = "0";
+            System.out.println("****** NUEVO ALUMNO******");
+            System.out.print("Introduce el nombre del Alumno: ");
+            nombre = sc.nextLine();
+            System.out.print("Introduce el primer apellido: ");
+            ape1 = sc.nextLine();
+            System.out.print("Introduce el segundo apellido: ");
+            ape2 = sc.nextLine();
+            System.out.print("Introduce el email: ");
+            email = sc.nextLine();
+            System.out.print("Introduce el número de matrícula(6 caracteres): ");
+            numMat = sc.nextLine();
+            result = sen.comprobarAlumno(email);
+            if (!result) {
+                sen.insertarAlumno(nombre, ape1, ape2, email, numMat);
+            } else {
+                System.out.println("!!! Error en la inserción de Alumno. ");
+                System.out.println("!!! El Alumno ya existe. ");
+            }
+        } 
+     private void bajaProfesor() throws SQLException  {
+        boolean result;
+        Scanner sc = new Scanner(System.in);
+        String email;
+            System.out.println("****** PROCEDIMIENTO DE BAJA PARA PROFESOR ******");
+            System.out.print("Introduce el email: ");
+            email = sc.nextLine();
+            result = sen.comprobarProfesor(email);
+            if (result) {
+                sen.borrarProfesor(email);
+                System.out.println ("Profesor borrado correctamente. ");
+            }
+            else {
+                System.out.println("!!! Error en la baja de Profesor. ");
+                System.out.println("!!! El email de Profesor NO existe. ");
+            }
+    }
+
+    private void bajaAlumno() throws SQLException {
+        boolean result;
+        Scanner sc = new Scanner(System.in);
+        String email;
+            System.out.println("****** PROCEDIMIENTO DE BAJA PARA ALUMNO ******");
+            System.out.print("Introduce el email: ");
+            email = sc.nextLine();
+            result = sen.comprobarAlumno(email);
+            if (result) {
+                sen.borrarAlumno(email);
+            } else {
+                System.out.println("!!! Error en la baja de Alumno. ");
+                System.out.println("!!! El email de Alumno NO existe. ");
+            }
+        } 
+
+    private void menuBajas() throws SQLException {
+        int opcion = -1;     
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println();
+        System.out.println();
+        System.out.println(" |---------------- 2.- MENU DE BAJAS --------------|");
+        do {
+
+            System.out.println("    1.- Baja Profesor.");
+            System.out.println("    2.- Baja Alumno.");
+            System.out.println("    3.- Baja TFG.");    
+            System.out.println("");
+            System.out.println("");
+            System.out.println();
+            System.out.println("    0- Finalizar.");
+            System.out.print("Opción deseada: ");
+            opcion = sc.nextInt();
+        switch (opcion) {
+                case 1:
+                    bajaProfesor();
+                    break;
+                case 2:
+                    bajaAlumno();
+                    break;
+                case 3:
+//                    bajaTfg();                   
+                    break;
+                default:
+                    break;
+            }
+        } while (opcionMenu != 0);
+
+    }
+   private void menuInformes() throws SQLException {
+        int opcion = -1;     
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println();
+        System.out.println();
+        System.out.println(" |---------------- 5.- MENU DE INFORMES --------------|");
+        do {
+
+            System.out.println("    1.- Informes de Profesores.");
+            System.out.println("    2.- Informes de Alumnos.");
+            System.out.println("    3.- Informes de TFGs.");    
+            System.out.println("");
+            System.out.println("");
+            System.out.println();
+            System.out.println("    0- Finalizar.");
+            System.out.print("Opción deseada: ");
+            opcion = sc.nextInt();
+        switch (opcion) {
+                case 1:
+                    listarProfesores();
+                    break;
+                case 2:
+                    listarAlumnos();
+                    break;
+                case 3:
+                    listarTfg();                   
+                    break;
+                default:
+                    break;
+            }
+        } while (opcionMenu != 0);
+
+    }
+   private void listarProfesores() {
+       ResultSet rs;
+       rs = sen.listarProfesores();
+        try {
+            while (rs.next()) {
+                System.out.print("Id de Profesor: " + rs.getString("idProfesor")+ "; ");
+                System.out.print("Nombre: " + rs.getString("nombre")+ " ");
+                System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
+                System.out.print("Email: " + rs.getString ("emailProfesor") + "; ");
+                System.out.println ("Despacho " + rs.getString("despacho"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+   }
+   
+   private void listarAlumnos() {
+       ResultSet rs;
+       rs = sen.listarAlumnos();
+       try {
+            while (rs.next()) {
+                System.out.print("Id de Alumno: " + rs.getString("idAlumno")+ "; ");
+                System.out.print("Nombre: " + rs.getString("nombre")+ " ");
+                System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
+                System.out.println("Email: " + rs.getString ("emailAlumno") + " ");
+                System.out.println();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+   }
+   private void listarTfg() {
+       ResultSet rs;
+       rs = sen.listarTfg();
+       try {
+            while (rs.next()) {
+                System.out.print("Id Tfg: " + rs.getString("idTfg")+ "; ");
+                System.out.print("Id Profesor: " + rs.getString("idProfesor")+ "; ");
+                System.out.print("Id Alumno: " + rs.getString("idAlumno")+ "; ");
+                
+                System.out.print("Titulo: " + rs.getString("titulo")+ "; ");
+                System.out.print("Descripcion: " +" " + rs.getString("descripcion")+ "; ");
+                System.out.println();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+   }
+       
+ 
+
+    public void opcion5() {
+        System.out.println("------------en progreso------------");
+        /*Scanner sc = new Scanner(System.in);
+        int opcion5_1, opcion5_2;
+        boolean modificoCorrecto = false;
+        boolean otraVez5 = false;
+        do {
+            do {
+                System.out.println("Que modificacion quieres realizar:");
+                System.out.println("    1- Añadir alumno.");
+                System.out.println("    2- Borrar alumno.");
+                System.out.print("Opción deseada: ");
+                opcion5_1 = sc.nextInt();
+                switch (opcion5_1) {
+                    case 1:
+                        //pedir datos del TFG al que hay que añadir alumno, pedir datos del alumno a añadir y añadirlo;
+                        //sec.insertarAlumno();
+                        modificoCorrecto = true;
+                        break;
+                    case 2:
+                        //pedir datos del TFG al que hay que borrar alumno, poner el apartado alumno a null;
+                        modificoCorrecto = true;
+                        break;
+                    default:
+                        modificoCorrecto = false;
+                        System.out.println("Opción no valida.");
+                        break;
+                }
+            } while (!modificoCorrecto);
+            System.out.println("Quieres modificar mas TFG:");
+            System.out.println("    1- Si.");
+            System.out.println("    2- No.");
+            opcion5_2 = sc.nextInt();
+            switch (opcion5_2) {
+                case 1:
+                    otraVez5 = false;
+                    break;
+                case 2:
+                    otraVez5 = true;
+                    break;
+                default:
+                    otraVez5 = false;
+                    System.out.println("Opción no valida.");
+                    break;
+            }
+        } while (!otraVez5);*/
+    }
+    public void opcion33() {
+        sen.insertarDatosIniciales();
+        sen.listarDatosIniciales();
+    }
+    public void mostrarInterfaz() throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        int opcionMenu = -1;
+       
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
+        System.out.println ("|--------------------------------------------------|");
+        System.out.println();
+        System.out.println();
+        System.out.println(" |------------------- MENU PRINCIPAL ----------------|");
+        do {
+
+            System.out.println("    1.- Altas.");
+            System.out.println("    2.- Bajas.");
+            System.out.println("    3.- Modificaciones.");
+            System.out.println("    4.- Consultas.");
+            System.out.println("    5.- Informes.");
+            System.out.println("   33.- Insertar datos iniciales");
+            System.out.println("");
+            System.out.println("");
+            
+            /* La siguiente opcion debera ocultarse a la hora de hacer la presentación al cliente.
+            **
+            */       
+
+            
+            System.out.println();
+            System.out.println("    0.- Finalizar.");
+            System.out.print("Opción deseada: ");
+            try {
+                opcionMenu = sc.nextInt();
+
+            } catch (Exception e) {
+                System.out.println("[ERROR]");
+                sc.next();
+                opcionMenu = 0;
+            }
+
+            switch (opcionMenu) {
+                case 1:
+                    //funcion mostrar lista
+                    menuAltas();
+                    break;
+                case 2:
+                    //funcion añadir profesor
+                    menuBajas();
+                    break;
+                case 3:
+                    //funcion borrar un TFG
+//                    menuModificaciones();
+                    break;
+                case 4:
+                    //funcion buscar TFG
+//                    menuConsultas();
+                    break;
+                 case 5:
+                    //funcion buscar TFG
+                    menuInformes();
+                    break;
+                    
+                case 33:
+                    opcion33();
+                default:
+                    System.out.println("Opción no valida.");
+                    break;
+            }
+
+        } while (opcionMenu != 0);
+        sen.cerrar();
+    }
+    
+    //*
+    private void insertarProfesor() throws SQLException {
+        boolean result;
+        Scanner sc = new Scanner(System.in);
+        String nombre, ape1, ape2, email;
+        int desp = 0;
+        boolean repetido = false;
+        boolean continuar = true;
+        String opcion = "0";
+
+        do {
+            System.out.println("******NUEVO PROFESOR******");
+            System.out.print("Introduce el nombre del profesor: ");
+            nombre = sc.nextLine();
+            System.out.print("Introduce el primer apellido: ");
+            ape1 = sc.nextLine();
+            System.out.print("Introduce el segundo apellido: ");
+            ape2 = sc.nextLine();
+            System.out.print("Introduce el email: ");
+            email = sc.nextLine();
+            System.out.print("Introduce el número de despacho(4 dígitos): ");
+            desp = sc.nextInt();
+            // Comprobar que el profesor no existe
+            result = sen.comprobarProfesor(email);
+            if (!result) {
+                sen.insertarProfesor(nombre, ape1, ape2, email, desp);
+            }
+            else {
+                System.out.println("Error en la inserción de profesor. ");
+                System.out.println("Pulse para continuar .");
+                System.out.println("0 para salir .");
+            }    
+            opcion = sc.nextLine();
+                
+    }
+        while (opcion != "0");
+//*/
+    }
 }
+        
