@@ -5,23 +5,23 @@
  */
 package fisftc;
 
+import java.sql.SQLException;
+
 /**
  *
  * @author jm
  */
-// import Secretaria.*;
+// 
 public class Fisftc {
-    /**
-     * @param args the command line arguments
-     */
-    public Fisftc() {
-      Interfaz interfaz = new Interfaz();  
+    public Fisftc() throws SQLException{
+        Interfaz interfaz = new Interfaz();
     }
-   
-    public static void main(String[] args) {
-        // TODO code application logic here
-        Fisftc aplicacion = new Fisftc();
-        
+
+
+    public static void main(String[] args) throws SQLException {
+       Sentencias sn = new Sentencias();
+       Conexion cn = sn.obtenerConexion();
+       Fisftc aplicacion = new Fisftc();
     }
-    
+
 }
