@@ -17,7 +17,6 @@ public class Interfaz {
     public Interfaz() throws SQLException {
         validacion = new Validacion();
         metodos = new Metodos();
-        menuPrincipal();
     }
 
     /**
@@ -27,7 +26,7 @@ public class Interfaz {
 
     /* Funcion que implementa la funcionalidad del menu principal apoyandose en la
 	 clase Metodos.*/
-    final void menuPrincipal() {
+    void menuPrincipal() {
         int opcionMP = -1;
 
         do {
@@ -38,7 +37,7 @@ public class Interfaz {
             }
             System.out.println("    Seleccione una opcion:  ");
             /*CAPTURAR*/
-            
+
             switch (opcionMP) {
                 case 1: {/*MOSTRAR TFG*/
                     ArrayList<TFG> lista;

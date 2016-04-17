@@ -2,6 +2,7 @@ package fisftc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
@@ -141,6 +142,7 @@ public class Sentencias {
 
         return rs;
     }
+    
 
     public ResultSet obtenerAlumnos() {
         if (this.conectar()) {
@@ -152,8 +154,7 @@ public class Sentencias {
 
     public ResultSet obtenerConvocatoria() {
         if (this.conectar()) {
-            rs= cn.Select("Select * from" + Convocatoria.tabla);
-        
+            rs =cn.Select("select * from " + Convocatoria.tabla);
         }
 
         return rs;
@@ -166,9 +167,58 @@ public class Sentencias {
 
         return rs;
     }
-
+    
+   /**
+     * 
+     * Obtiene de los alumnos que cuentan con un trabajo y que o bien no estan 
+     * en defensa o bien estan y no cuentan con fecha de asigacion
+     * 
+     * @return 
+     */
+    public ResultSet obtenerAlumnosAsignables(){
+        if (this.conectar()) {
+            rs = cn.Select("select * from "+ Alumno.tabla 
+                        + " where " +Alumno.idtfg + " > " + 0
+                        + " and 1 <= ( select cout(*) from " 
+                                    + Defensa.tabla +" where "+ Defensa.idTfg + " = " +  Alumno.idtfg
+                                    + " and " + Defensa.fechaDefensa + " = null" );
+        }
+        
+        return rs;
+    }
+    
+   
+/**
+     * La funcion devuelve una fila de la tabla profesor que coincida con el idprofesor
+     * contenido en el TFG que se pasa como parámetro.
+     * 
+     * @param trabajo espera un objeto de tipo TFG
+     * @return ResultSet con el resultado de la busqueda.
+     */
+    public ResultSet obtenerProfesor(TFG trabajo){
+        if (this.conectar()) {
+            rs =cn.Select("select * from " + Profesor.tabla + " where "+Profesor.idProfesor + " = " +trabajo.getIdProfesorM());
+        }
+        return rs;
+    }
+    
     /**
-     * Función para insertar que devoverá el id del objeto insertado
+     *  Lista ,no repetidos, los anios de convocatoria.
+     * 
+     * @return ResultSet con la busqueda.
+     */
+    public ResultSet obtenerAnios(){
+        if(this.conectar()){
+            rs = cn.Select("select distinct "+Convocatoria.anio +" from " +Convocatoria.tabla);
+        }
+        return rs;
+    }
+    
+
+    
+/**
+     * 
+     * Inserta el trabajo en la base de datos y devuelve el id del objeto insertado
      *
      * @param trabajo espera un objeto de tipo TFG
      * @return 0 si no ha podido insertar y el numero de su id si ha tenido
@@ -176,19 +226,40 @@ public class Sentencias {
      */
     public int insertarTFG(TFG trabajo) {
         int id = 0;
+        boolean exito= true;
         if (this.conectar()) {
             Calendar c = new GregorianCalendar();
             int dia = c.get(Calendar.DATE);
             int mes = c.get(Calendar.MONTH) + 1;
             int año = c.get(Calendar.YEAR);
+            trabajo.setFechaM(año + "-" + mes + "-" + dia);
 
-            //modificar  exito = cn.noSelect("INSERT INTO tfg (titulo,idprofesor,convocatoria,fecharegistro)values('" + titulo + "'," + idProf + ",0,'" + año + "-" + mes + "-" + dia + "')");
+            exito = cn.noSelect("INSERT INTO " + TFG.tabla
+                    + " (" + TFG.idProfesor + "," + TFG.titulo + "," + TFG.descripcion + "," + TFG.fecha + "," + TFG.finalizado + ")values"
+                    + " (" + trabajo.getIdProfesorM()
+                    + ",'" + trabajo.getTituloM() + "','" + trabajo.getDescripcionM()
+                    + "','" + trabajo.getFechaM() + "'," + trabajo.getFinalizadoM() + ")");
+
+            if (exito) {
+                rs = cn.Select("Select max (" + TFG.idTfg + ") from " + TFG.tabla);
+                try {
+                    if (rs != null && rs.next()) {
+                        id = rs.getInt(1);
+                    }
+                } catch (SQLException ex) {
+                    if (trazas) {
+                        Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            
+            }
+
         }
 
         return id;
     }
 
-    /**
+   /** Author Jm
      * Función para insertar que devoverá el id del objeto insertado
      *
      * @param profesor espera un objeto de tipo Profesor
@@ -197,10 +268,30 @@ public class Sentencias {
      */
     public int insertarProfesor(Profesor profesor) {
         int id = 0;
+        String s = "";
+        boolean exito = true;
         if (this.conectar()) {
-            // exito = cn. lo que toque
-        }
 
+            exito = cn.noSelect("INSERT INTO" +Profesor.tabla 
+                    + "("+Profesor.emailProfesor+ ", "
+                    + Profesor.nombre+ ", "
+                    + Profesor.ape1+ ", "
+                    + Profesor.ape2+ ", "
+                    + Profesor.despacho+ ", "
+                    + Profesor.estado
+                    + ") VALUES (" +profesor.getEmailProfesorM()+ ", "
+                    + profesor.getNombreM()+ ", "
+                    + profesor.getApe1M()+ ", "
+                    + profesor.getApe2M()+ ", "
+                    + profesor.getDespachoM()+ ", "
+                    + profesor.isEstadoM()+ ", "
+                    + ")");
+
+            if (exito){
+                rs = cn.Select("Select idProfesor from "+Profesor.tabla +"where emailProfesor = "
+                        + ""+profesor.getEmailProfesorM()+");");
+            }           
+        }
         return id;
     }
 
@@ -210,13 +301,25 @@ public class Sentencias {
      * @param alumno espera un objeto de tipo Alumno
      * @return 0 si no ha podido insertar y el numero de su id si ha tenido
      * exito
+     * Campos:idAlumno, emailAlumno, idTfg, numMat, nombre, ape1, ape2, fechaAsignacion
+     *  IdTfg se asignará en .... otra funcion
      */
     public int insertarAlumno(Alumno alumno) {
         int id = 0;
         if (this.conectar()) {
-            //exito = cn. lo qu toque
+            cn.noSelect("INSERT INTO" +Alumno.tabla 
+                    + "("+Alumno.emailAlumno+ ", "
+                    + Alumno.numMat+ ", "
+                    + Alumno.nombre+ ", "
+                    + Alumno.ape1+ ", "
+                    + Alumno.ape2+ ", "
+                    + ") VALUES (" +alumno.getEmailAlumnoM()+ ", "
+                    + alumno.getNumMatM()+ ", "
+                    + alumno.getNombreM()+ ", "
+                    + alumno.getApe1M()+ ", "
+                    + alumno.getApe2M()+ ", "
+                    + ")");
         }
-
         return id;
     }
 
@@ -397,5 +500,68 @@ public class Sentencias {
         }
 
     }
+
+public void listarDatosIniciales() {
+        rs = cn.Select("Select * from profesor");    
+        try {
+            while (rs.next()) {
+                System.out.print("Id de Profesor: " + rs.getString("idProfesor")+ "; ");
+                System.out.print("Nombre: " + rs.getString("nombre")+ " ");
+                System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
+                System.out.print("Email: " + rs.getString ("email") + "; ");
+                System.out.println ("Despacho " + rs.getString("despacho"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        rs = cn.Select("Select * from alumno");    
+        try {
+            while (rs.next()) {
+                System.out.print("Id de Alumno: " + rs.getString("idAlumno")+ "; ");
+                System.out.print("Nombre: " + rs.getString("nombre")+ " ");
+                System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
+                System.out.println("Email: " + rs.getString ("email") + " ");
+                System.out.println();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        rs = cn.Select("Select * from tfg");    
+        try {
+            while (rs.next()) {
+                System.out.print("Id Tfg: " + rs.getString("idTfg")+ "; ");
+                System.out.print("Id Profesor: " + rs.getString("idProfesor")+ "; ");
+                System.out.print("Id Alumno: " + rs.getString("idAlumno")+ "; ");
+                
+                System.out.print("Titulo: " + rs.getString("titulo")+ "; ");
+                System.out.print("Descripcion: " +" " + rs.getString("descripcion")+ "; ");
+                System.out.println();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    
+    public void insertarDatosIniciales() {      
+        cn.noSelect("INSERT INTO profesor (nombre)"         // Muestra de sentencia para insercion de un SOLO campo
+                    + "VALUES ('juan')");
+ 
+       cn.noSelect("INSERT INTO profesor (nombre, ape1, ape2, email, despacho)"      // Muestra de sentencia para insercion de varios campos especificados
+                        + "VALUES ('Jose', 'Martin', 'Fernandez', 'jmartinf@upm.es', 1105)") ;
+        
+        cn.noSelect("INSERT INTO alumno (numMat, nombre, ape1, ape2, email)"
+                        + "VALUES ('AA0045', 'Eduardo', 'Navarro', 'Del Este', 'edu@alumnos.upm.es')");
+ 
+        cn.noSelect("INSERT INTO tfg (idProfesor, idAlumno, titulo, descripcion, convocatoria, fechaRegistro)" 
+                           + "VALUES (1, 1, 'La obsolescencia programada', 'Este es el campo de la descripción de la obsolescencia programada',"
+                           +"'03', '2015-11-23')");
+                           
+       }
+ /*
+  Fin de codigo de prueba
+ */   
+
+
 
 }
