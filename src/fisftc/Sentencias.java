@@ -42,7 +42,7 @@ public class Sentencias {
 
     public void montarBase() {
         if (!this.controlTablas()) {
-            cn.noSelect("CREATE TABLE profesor("
+            cn.noSelect("CREATE TABLE "+Profesor.tabla + " ("
                     + "  idProfesor INTEGER not null GENERATED ALWAYS AS IDENTITY,"
                     + "  emailProfesor VARCHAR(70) not null,"
                     + "  nombre VARCHAR(45) not null,"
@@ -129,9 +129,16 @@ public class Sentencias {
     public ResultSet obtenerTFGDisponibles() {
         if (this.conectar()) {
             // currarlo
-            rs = cn.Select("select * from " + TFG.tabla);
+            rs = cn.Select("SELECT * FROM " + TFG.tabla
+            + " WHERE idTfg NOT IN (SELECT idTfg FROM " + Alumno.tabla+ " WHERE idTfg IS NOT NULL)");
         }
+        
+        
         return rs;
+        /*
+        select idTfg, titulo, idprofesor from tfg
+             WHERE idTfg NOT IN (Select idTfg from alumno WHERE IDTFG is not NULL );
+        */
 
     }
 
@@ -198,6 +205,17 @@ public class Sentencias {
     public ResultSet obtenerProfesor(TFG trabajo){
         if (this.conectar()) {
             rs =cn.Select("select * from " + Profesor.tabla + " where "+Profesor.idProfesor + " = " +trabajo.getIdProfesorM());
+        }
+        return rs;
+    }
+    
+    /*
+     Devuelve un profesor buscando por su email
+    */
+    public ResultSet estaProfesor ( String email) {
+        if (this.conectar()) {
+         rs = cn.Select("SELECT * FROM profesor "
+                 + " WHERE emailProfesor = "+email+" );");
         }
         return rs;
     }
@@ -348,6 +366,10 @@ public class Sentencias {
         return exito;
     }
 
+    
+    /* Jm
+            Sin enviar
+    */
     public boolean modificarTFG(TFG trabajo) {
         boolean exito = false;
         if (this.conectar()) {
@@ -355,17 +377,51 @@ public class Sentencias {
             int dia = c.get(Calendar.DATE);
             int mes = c.get(Calendar.MONTH) + 1;
             int año = c.get(Calendar.YEAR);
-
-            //modificar  exito = cn.noSelect("INSERT INTO tfg (titulo,idprofesor,convocatoria,fecharegistro)values('" + titulo + "'," + idProf + ",0,'" + año + "-" + mes + "-" + dia + "')");
+            
+//           Campos: idTfg,idProfesor, titulo , descripcion,  fechaRegistro ,  finalizado 
+            cn.noSelect("UPDATE " +TFG.tabla 
+                    + "("+TFG.idProfesor+ ", "
+                    + TFG.titulo+ ", "
+                    + TFG.descripcion+ ", "
+                    + TFG.fecha+ ", "
+                    + TFG.finalizado+ ", "
+                    + Profesor.estado
+                    + ") VALUES (" +trabajo.getIdProfesorM()+ ", "
+                    + trabajo.getTituloM()+ ", "
+                    + trabajo.getDescripcionM()+ ", "
+                    + trabajo.getFechaM()+ ", "
+                    + "WHERE "+ TFG.idTfg+ "= "+trabajo.getIdTfgM()
+                    + ")");          
         }
 
         return exito;
     }
 
+    /*
+    Jm Tiempo 15 minutos
+    @Param profesor
+    Modifica el profesor pasado como parametro con los datos actuales
+    */
+    
     public boolean modificarProfesores(Profesor profesor) {
         boolean exito = false;
         if (this.conectar()) {
             // exito = cn. lo que toque
+            cn.noSelect("UPDATE " +Profesor.tabla 
+                    + "("+Profesor.emailProfesor+ ", "
+                    + Profesor.nombre+ ", "
+                    + Profesor.ape1+ ", "
+                    + Profesor.ape2+ ", "
+                    + Profesor.despacho+ ", "
+                    + Profesor.estado
+                    + ") VALUES (" +profesor.getEmailProfesorM()+ ", "
+                    + profesor.getNombreM()+ ", "
+                    + profesor.getApe1M()+ ", "
+                    + profesor.getApe2M()+ ", "
+                    + profesor.getDespachoM()+ ", "
+                    + profesor.isEstadoM()+ ", "
+                    + "WHERE "+ Profesor.idProfesor+ "= "+profesor.getEmailProfesorM()
+                    + ")");          
         }
 
         return exito;
@@ -407,6 +463,9 @@ public class Sentencias {
         return exito;
     }
 
+    /*
+       Segun las especificaciones, no se dara un baja un profesor, sino que su estado pasara a false
+    */
     public boolean eliminarProfesores(Profesor profesor) {
         boolean exito = false;
         if (this.conectar()) {
@@ -561,6 +620,91 @@ public void listarDatosIniciales() {
  /*
   Fin de codigo de prueba
  */   
+
+    /**
+     *
+     * Obtiene de los alumnos que cuentan con un trabajo y que o bien no estan
+     * en defensa o bien estan y no cuentan con fecha de asigacion
+     *
+     * @return
+     */
+    public ResultSet obtenerAlumnosDefendibles() {
+        if (this.conectar()) {
+            rs = cn.Select("select * from " + Alumno.tabla
+                    + " where " + Alumno.idtfg + " > " + 0
+                    + " and false = ( select "+TFG.finalizado+" from "+TFG.tabla+" where "+ TFG.idTfg + " = alumno."+Alumno.idtfg+")"
+                    + " and 0 = ( select count(*) from "+Defensa.tabla+" where "+Alumno.idtfg+" = alumno."+Alumno.idtfg
+                    + " and "+ Alumno.idAlumno +"= alumno." +Alumno.idAlumno+" and "+ Defensa.nota +"= -1)"
+                    );
+        }
+
+        return rs;
+    }
+
+    
+    /*
+        Jm. Tiempo 15 minutos
+        Obtiene los Tfgs de un profesor
+    PENDIENTE: Insertar el no finalizado
+    */ 
+    ResultSet obtenerTFGProfesor(Profesor profesor) {
+        if (this.conectar()) {
+           cn.Select("SELECT * FROM" +TFG.tabla 
+                    + "WHERE "+TFG.idProfesor+ " = "+profesor.getIdProfesorM()
+                    + ")");
+        }
+        return rs;
+    }
+     /*
+    ** Jm. Tiempo 15 minutos
+        Borra un Tfg habiendo pasado su identificador
+    */
+    public boolean borrarTfg(int idTfgM) {
+        boolean exito = false;
+        if (this.conectar()) {
+            cn.noSelect("DELETE FROM "+TFG.tabla
+                    + " WHERE " + TFG.idTfg+ " = " +idTfgM+ ")"); 
+            exito = true;
+        }
+        return exito;
+    
+    }
+    /*
+    Jm
+    */
+    /*
+    void obtenerTFGs(int idTfg, int idProfesor) {
+        lista.clear();
+        rs = sent.obtenerTFGProfesor(profesor);
+        try {
+            while(rs.next()) {
+                tfg = new TFG();
+                tfg.setIdTfgM(rs.getInt(TFG.idTfg));
+                tfg.setIdProfesorM(rs.getInt(TFG.idProfesor));
+                tfg.setTituloM(rs.getString(TFG.titulo));
+                tfg.setDescripcionM(rs.getString(TFG.descripcion));
+                tfg.setFechaM(rs.getString(TFG.fecha));
+                tfg.setFinalizadoM(rs.getBoolean(TFG.finalizado));
+                lista.add(tfg);                    
+            }
+        } catch (SQLException e) {
+          if (trazas) {
+              Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+//*/
+    
+    ResultSet obtenerTFG(ArrayList<TFG> tfgLista, int idTfg, int idProfesor) {
+        if (this.conectar()) {
+            cn.noSelect("SELECT * FROM "+TFG.tabla
+                    + " WHERE " + TFG.idTfg+ " = " +idTfg+ 
+                    ", idProfesor "+TFG.idProfesor
+                    + ")"); 
+        }
+        return rs;
+    }
 
 
 

@@ -35,7 +35,8 @@ public class Validacion {
         return resul;
     }
 
-    /**
+ 
+    /** Cambios V 3.0. Cambiada completa la siguiente funcion
      * Permite comprobar que un String tiene un tamaño valido entre un mínimo y
      * un máximo
      *
@@ -43,6 +44,7 @@ public class Validacion {
      * @param max determina el tamaño máximo del String
      * @return true si tiene tamaño valido y false si no tiene un tamaño valido
      */
+    /*
     public boolean getString(int min, int max, String st) {
         boolean resul;
 
@@ -55,7 +57,28 @@ public class Validacion {
         }
         return resul;
     }
-
+*/
+    * Permite comrobar que un entero está entre dos valores.
+-     *
+-     * @param min longitud mínima del String
+-     * @param max longitud máxima del String
+-     * @return true si el String es de longitud entre min y max
+-     */
+-    public boolean getFloat(String st, float min, float max) {
+-        float entero = 0;
+-        boolean resul = false;
+-        try {
+-            entero = Float.parseFloat(st);
+-            if (entero >= min && entero <= max) {
+-                resul = true;
+-            }
+-        } catch (Exception e) {
+-        }
+-
+-        return resul;
+-
+-    }
+    
     /**
      * Comprueba que el dato recibido es de tipo entero
      *
@@ -102,6 +125,8 @@ public class Validacion {
      * @param email correo para validar
      * @return true si correo es válido, falso si no lo es
      */
+    /*
+     * Cambios V 3.0
     public static boolean validarEmail(String email) {
 
         // convierte el correo introducido en un patrón
@@ -112,6 +137,29 @@ public class Validacion {
         return matcher.matches();
 
     }
+    */
+         * Método para validar email. Comprueba que tiene el formato correcto.
+      *
+      * @param email correo para validar
+      * @return true si correo es válido, falso si no lo es
+      */
+     public static boolean validarEmail(String email) {
+-        boolean exito = false;
++
+         // convierte el correo introducido en un patrón
+         Pattern pattern = Pattern.compile(CARACTERES_CORREO);
+ 
+         // compara el patrón con el correo
+         Matcher matcher = pattern.matcher(email);
+-        if(matcher.matches()){
+-            Metodos met = new Metodos();
+-            exito = !met.comprobarCorreo(email);
+-        }
+-        return exito;
++        return matcher.matches();
+ 
+     }
+ 
 
     /**
      * Formato aceptado yyyy-mm-dd

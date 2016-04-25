@@ -121,7 +121,13 @@ public class Interfaz {
                 i++;
             } while (i < lista.size());
             System.out.println("");
+            /* Cambio V3.0
+             * Cambio de linea por la siguiente
             System.out.println("Selecione un trabajo para ampliar:               0 Para salir");
+            */
+            System.out.println("Elige una opcion:\n [0] VOLVER");
+
+            
             do {
                 aux = sc.nextLine();
                 if (!validacion.getInt(aux, 0, lista.size())) {
@@ -144,9 +150,22 @@ public class Interfaz {
         int i = -1;
         String aux;
         mostrarTFG(trabajo, metodos.obtenerProfesor(trabajo));
+        /* Cambio V3.0
+         ** Reemplazadas las 3 siguientes lineas
+         
         System.out.println(" OPCIONES");
         System.out.println(" 1- Asignar Alumno");
         System.out.println(" 0- Volver");
+        
+        */
+        /* Por las  4 siguientes
+         **/
+        System.out.println("");
+        System.out.println("");
+        System.out.println(" [1]  Asignar Alumno");
+        System.out.println(" [0]  VOLVER");
+        // Cambios hasta aqui
+        
         do {
             aux = sc.nextLine();
             if (!validacion.getInt(aux, 0, 1)) {
@@ -251,7 +270,8 @@ public class Interfaz {
                             } while (!validacion.validarFecha(captura));
 
                             def.setFechaDefensaM(captura);
-
+        /* Cambios Version 3.0
+        Reempolazadas las lineas comentadas
                             if (!metodos.aniadirDefensa(def) && trazas) {
                                 System.out.println("Error al introducir Defensa");
                             } else {
@@ -259,6 +279,31 @@ public class Interfaz {
                             }
                         }
                     }
+        */
+        // Por las siguientes:
+        System.out.println("Introduzca Nota:");
+                            do {
+                                captura = sc.nextLine();
+                                if (!validacion.getFloat(captura, 0, 10)) {
+                                    System.out.println("Opcion no valida, seleccione otra:");
+                                }
+                            } while (!validacion.getFloat(captura, 0, 10));
+
+                            def.setNotaM(Float.parseFloat(captura));
+                            if (Float.parseFloat(captura) >= 5) {
+                                tfg.setFinalizadoM(true);
+                                metodos.modificarTFG(tfg);
+                            }
+
+                            if (metodos.aniadirDefensa(def)) {
+                                System.out.println("Defensa insertada con exito.");
+                                System.out.println("Pulse enter para continuar.");
+                                sc.nextLine();
+                            }
+                        }
+                    }
+        // Cambios hasta aki
+        
                 } else {
                     System.out.println("No hay Convocatorias que asignar a Defensa.");
                     System.out.println("¿Deseas crear una nueva convocatoria?");
@@ -273,16 +318,65 @@ public class Interfaz {
                     } while (!validacion.getInt(captura, 0, 1));
 
                     if (Integer.parseInt(captura) == 1) {
+                         /* Cambios V 3.0
+                         * Reemplazadas las lineas comentadas
                         int id = this.crearConvocatoria();
+                       
                         if (id != 0) {
                             def.setIdAlumnoM(alum.getIdAlumnoM());
                             def.setIdTfgM(alum.getIdtfgM());
                             def.setIdConvocatoriaM(id);
                         }
+                    
                     }
                 }
 
             }
+*/                                                     
+// Por las siguientes
+                        conv = this.crearConvocatoria();
+                        if (conv.getidConvocatoriaM() != 0) {
+                            def.setIdAlumnoM(alum.getIdAlumnoM());
+                            def.setIdTfgM(alum.getIdtfgM());
+                            def.setIdConvocatoriaM(conv.getidConvocatoriaM());
+                            System.out.println("Introduce el dia");
+
+                            do {
+                                captura = sc.nextLine();
+                                captura = conv.getAnioM() + "-" + conv.getMesM() + "-" + captura;
+                                if (!validacion.validarFecha(captura)) {
+                                    System.out.println("Día no válido.");
+                                }
+                            } while (!validacion.validarFecha(captura));
+
+                            def.setFechaDefensaM(captura);
+
+                            System.out.println("Introduzca Nota:");
+                            do {
+                                captura = sc.nextLine();
+                                if (!validacion.getFloat(captura, 0, 10)) {
+                                    System.out.println("Opcion no valida, seleccione otra:");
+                                }
+                            } while (!validacion.getFloat(captura, 0, 10));
+
+                            def.setNotaM(Float.parseFloat(captura));
+                            if (Float.parseFloat(captura) >= 5) {
+                                tfg.setFinalizadoM(true);
+                                metodos.modificarTFG(tfg);
+                            }
+
+                            if (metodos.aniadirDefensa(def)) {
+                                System.out.println("Defensa insertada con exito.");
+                                System.out.println("Pulse enter para continuar.");
+                                sc.nextLine();
+                            }
+                        }
+                    }
+                }
+
+            }
+
+// Hasta aki los cambios anteriores              
         } else {
             System.out.println("No hay alumnos a los que asignar Defensa.");
         }
@@ -330,11 +424,20 @@ public class Interfaz {
         } else if (opcion == 2) {
             conv.setTipoM("Extraordinaria");
         }
-
+/* Cambios V 3.0
+         * Reemplazadas las siguientes lineas
+        
         if (opcion != 0) {
             id = metodos.aniadirConvocatoria(conv);
         }
         return id;
+        */
+        // Por estas
+        if (opcion != 0) {
+            conv.setidConvocatoriaM(metodos.aniadirConvocatoria(conv));
+        }
+        return conv;
+        // Hasta aki los cambios
     }
 
     /**
@@ -467,7 +570,12 @@ public class Interfaz {
                             }
                         }
                     }
+                    /* Cambios V3.0 Modificada la siguiente lina
                     System.out.println("pulse cualquier tecla para continuar");
+                    */
+                    // Por esta
+                    System.out.println("pulse enter para continuar");
+
                     sc.nextLine();
                 }
             } else if (trazas) {
@@ -547,7 +655,10 @@ public class Interfaz {
             System.out.println("OJO--" + trabajo.getIdTfgM());
         }
     }
-
+    /*
+     *Cambios en la V3.0
+      Funcion borrar profesor completa no acabada deimplementar en la entrega de Sprint 2
+     **/
     private void borrarProfesor() {
         String aux;
         int opcion = -1;
@@ -595,6 +706,13 @@ public class Interfaz {
         }
         }
     }
+    
+     /*
+     *Cambios en la V3.0
+      Funcion menu cambio Tfg completa no acabada deimplementar en la entrega de Sprint 2
+     Consecuencia de borrar profesor
+     **/
+    
     private int menuCambioTfg(int opcion) {
         String captura;
 //*
@@ -653,13 +771,26 @@ public class Interfaz {
      */
     private void aniadirTFG() {
         String aux;
-        int idProfesor, contador;
+        /* Cambios V3.0
+         *Mopdificada la siguientes linea
+         * int idProfesor, contador;
+            int j = -1;
+         **/
+        // Por estas dos
+        
+        /* Cambios V3.0
+         * Añadida la siguiente linea
+         **/
+        int idProfesor;
         int j = -1;
+        boolean continuar = false;
+// Hasta aki los cambios
         TFG trab = new TFG();
         for (int i = 0; i < 24; i++) {
             System.out.println("");
         }
         System.out.print("TITULO:");
+        /* Cambios V3.0
         aux = sc.nextLine();
         trab.setTituloM(aux);
 
@@ -674,7 +805,33 @@ public class Interfaz {
         for (int i = 0; i < 24; i++) {
             System.out.println("");
         }
+        
+*/
+do {
+            aux = sc.nextLine();
+            if (!validacion.getString(1, 45, aux)) {
+                System.out.println("Titulo no valido, introduzca otro: ");
+            }
+        } while (!validacion.getString(1, 45, aux));
+        trab.setTituloM(aux);
 
+        for (int i = 0; i < 24; i++) {
+            System.out.println("");
+        }
+
+        System.out.print("DESCRIPCION:");
+        do {
+            aux = sc.nextLine();
+            if (!validacion.getString(0, 300, aux)) {
+                System.out.println("Descripcion no valida, introduzca otro: ");
+            }
+        } while (!validacion.getString(0, 300, aux));
+        trab.setDescripcionM(aux);
+
+        for (int i = 0; i < 24; i++) {
+            System.out.println("");
+        }
+// hasta aki los cambios
         System.out.println("PROFESOR:");
         System.out.println("");
         System.out.println("0- Profesor existente");
@@ -697,6 +854,7 @@ public class Interfaz {
             } else {
                 System.out.println("Lista vacia...");
             }
+          /* Cambios V3.0  
         } else if (j == 1) {
             idProfesor = aniadirProfesor();
             trab.setIdProfesorM(idProfesor);
@@ -706,6 +864,32 @@ public class Interfaz {
                 System.out.println("OJO tfg" + idtfg);
             }
         }
+        */
+          } else if (j == 1) {
+                idProfesor = aniadirProfesor();
+                trab.setIdProfesorM(idProfesor);
+                continuar = true;
+
+            }
+        } while (!continuar);
+
+        trab.setIdTfgM(metodos.aniadirTfg(trab));
+
+        System.out.println("Deseas asignar un alumno:");
+        System.out.println("[1] Si");
+        System.out.println("[0] No");
+
+        do {
+            aux = sc.nextLine();
+            if (!validacion.getInt(aux, 0, 1)) {
+                System.out.print("Opcion no valida, seleccione otra: ");
+            }
+        } while (!validacion.getInt(aux, 0, 1));
+        j = Integer.parseInt(aux);
+        if (j == 1) {
+            asignarAlumno(trab);
+        }
+    // hasta aki los cambios          
     }
 
     /**
@@ -788,7 +972,8 @@ public class Interfaz {
 
         if (!tfgLista.isEmpty()) {
 
-            Iterator<TFG> iterTfg = tfgLista.iterator();
+            Iterator<TFG> iterTfg = tfgLista.iterator
+  /* Cambios V3.0          
             contador = 0;
 
             while (iterTfg.hasNext()) {
@@ -803,8 +988,26 @@ public class Interfaz {
 
                 contador++;
             }
+            if (contador >0)
+*/
+  contador = 1;
 
-            if (contador > 0) {
+            while (iterTfg.hasNext()) {
+                tfg = iterTfg.next();
+                prof = metodos.obtenerProfesor(tfg);
+                System.out.println("");
+                System.out.println("DETALLES DEL PROYECTO[" + (contador) + "]");
+                System.out.println("");
+                System.out.println("Titulo: " + tfg.getTituloM());
+                System.out.println("Tutor:" + prof.getNombreM());
+                System.out.println("Descripcion:" + tfg.getDescripcionM());
+
+                contador++;
+            }
+            
+            if (contador > 1) {
+                 // Hasta aki los cambios
+           
                 System.out.println("Seleciona el TFG que deseas modificar: \n[0] Para salir");
                 do {
                     captura = sc.nextLine();
@@ -813,9 +1016,12 @@ public class Interfaz {
                     }
                 } while (!validacion.getInt(captura, 0, contador - 1));
                 opcion = Integer.parseInt(captura);
-
+/* Cambios V3.0
                 tfg = tfgLista.get(opcion);
-
+*/
+                    if (opcion != 0) {
+                    tfg = tfgLista.get(opcion - 1);
+// Hasta aki los cambios
                 do {
 
                     System.out.println("Selecciona elemento a Modificar:");
@@ -872,6 +1078,10 @@ public class Interfaz {
                                 }
                             } else if (opcionCampos == 2) {
                                 tfg.setIdProfesorM(this.aniadirProfesor());
+                                /* Cambios V3.0
+                                 * Añadida la siguiente linea
+                                 **/
+                                    prof = metodos.obtenerProfesor(tfg);
                             }
                             if (opcionCampos != 0) {
                                 tfg.setIdProfesorM(prof.getIdProfesorM());
@@ -892,12 +1102,19 @@ public class Interfaz {
                             metodos.modificarTFG(tfg);
                             break;
                         case 3:
+                            /* Cambios V3.0 Modificada la siguiente linea
                             System.out.print("Descripcion actual:\n" + tfg.getDescripcionM() + "\nTitulo nuevo:");
+                            */
+                            System.out.println("Descripcion actual: " + tfg.getDescripcionM() + ". Titulo nuevo: ");
                             captura = sc.nextLine();
+                            /* Cambios V3.0 Modificada la siguiente linea
                             tfg.setTituloM(captura);
+                            */
+                            tfg.setDescripcionM(captura);
                             metodos.modificarTFG(tfg);
                             break;
                         case 4:
+                            /* Cambios V3.0 Modificado el case completo
                             if (!tfg.getFinalizadoM()) {
                                 System.out.print("Estado actual: No Finalizado \n[1]Para marcarlo como finalizado\n[0]Salir");
 
@@ -915,6 +1132,34 @@ public class Interfaz {
                                 System.out.print("Opcion no valida el tfg está finalizado, seleccione otra:");
                             }
                             break;
+                            */
+                            if (!tfg.getFinalizadoM()) {
+                                    System.out.println("Estado actual: No Finalizado \n[1]Para marcarlo como finalizado\n[0]Salir");
+
+                                    do {
+                                        captura = sc.nextLine();
+                                        if (!validacion.getInt(captura, 0, 1)) {
+                                            System.out.println("Opcion no valida, seleccione otra:");
+                                        }
+                                    } while (!validacion.getInt(captura, 0, 1));
+                                    if (Integer.parseInt(captura) == 1) {
+                                        tfg.setFinalizadoM(true);
+                                        metodos.modificarTFG(tfg);
+                                    }
+                                } else {
+                                    System.out.println("Opcion no valida el tfg está finalizado, seleccione otra:");
+                                }
+                                break;
+                            case 0:
+                                System.out.println("");
+                                System.out.println("DETALLES DEL PROYECTO DESPUES DE LOS CAMBIOS");
+                                System.out.println("");
+                                System.out.println("Titulo: " + tfg.getTituloM());
+                                System.out.println("Tutor:" + prof.getNombreM());
+                                System.out.println("Descripcion:" + tfg.getDescripcionM());
+                                System.out.println("pulsa enter para continuar");
+                                sc.nextLine();
+                                break;
                         case 0:
                             break;
                     }
@@ -962,12 +1207,17 @@ public class Interfaz {
         if (!profesorLista.isEmpty()) {
 
             Iterator<Profesor> iterProfesor = profesorLista.iterator();
+  /*    Cambios V3.0 modificada la siguiente linea          
             contador = 0;
-
+*/
+              contador = 1;
             while (iterProfesor.hasNext()) {
                 prof = iterProfesor.next();
                 System.out.println("");
+                /* Cambios V3.0 Modificada la siguiente linea
                 System.out.println("DETALLES DEL PROFESOR[" + (contador + 1) + "]");
+                */
+                System.out.println("DETALLES DEL PROFESOR[" + (contador) + "]");
                 System.out.println("");
                 System.out.println(" NOMBRE: " + prof.getNombreM());
                 System.out.println(" PRIMER APELLIDO: " + prof.getApe1M());
@@ -982,8 +1232,10 @@ public class Interfaz {
                 System.out.println(" ESTADO: " + estado);
                 contador++;
             }
-
+            /* Cambios V3.0 Modificada la siguiente linea
             if (contador > 0) {
+                */
+            if (contador > 1) {
                 System.out.println("Seleciona el Profesor que deseas modificar: \n[0] Para salir");
                 do {
                     captura = sc.nextLine();
@@ -1016,56 +1268,68 @@ public class Interfaz {
                     opcionCampos = Integer.parseInt(captura);
 
                     switch (opcionCampos) {
+                        /* Cambios V3.0
+                         * Cambiados todos los print por println
+                         * */
+                        
                         case 1:
-                            System.out.print("Nombre actual: " + prof.getNombreM() + "Nombre nuevo: ");
+                            System.out.println("Nombre actual: " + prof.getNombreM() + "Nombre nuevo: ");
                             do {
                                 captura = sc.nextLine();
                                 if (!validacion.getString(1, 45, captura)) {
-                                    System.out.print("El nombre debe contener entre 1 y 45 caracteres");
+                                    System.out.println("El nombre debe contener entre 1 y 45 caracteres");
                                 }
                             } while (!validacion.getString(1, 45, captura));
                             prof.setNombreM(captura);
                             metodos.modificarProfesor(prof);
                             break;
                         case 2:
-                            System.out.print("Primer apellido actual: " + prof.getApe1M() + " Primer apellido nuevo: ");
+                            System.out.println("Primer apellido actual: " + prof.getApe1M() + " Primer apellido nuevo: ");
                             do {
                                 captura = sc.nextLine();
                                 if (!validacion.getString(0, 45, captura)) {
-                                    System.out.print("El primer apellido debe contener entre 0 y 45 caracteres");
+                                    System.out.println("El primer apellido debe contener entre 0 y 45 caracteres");
                                 }
                             } while (!validacion.getString(0, 45, captura));
                             prof.setApe1M(captura);
                             metodos.modificarProfesor(prof);
                             break;
                         case 3:
-                            System.out.print("Segundo apellido actual: " + prof.getApe2M() + " Segundo apellido nuevo: ");
+                            System.out.println("Segundo apellido actual: " + prof.getApe2M() + " Segundo apellido nuevo: ");
                             do {
                                 captura = sc.nextLine();
                                 if (!validacion.getString(0, 45, captura)) {
-                                    System.out.print("El segundo apellido debe contener entre 0 y 45 caracteres");
+                                    System.out.println("El segundo apellido debe contener entre 0 y 45 caracteres");
                                 }
                             } while (!validacion.getString(0, 45, captura));
                             prof.setApe2M(captura);
                             metodos.modificarProfesor(prof);
                             break;
                         case 4:
-                            System.out.print("Email actual: " + prof.getEmailProfesorM() + " Email nuevo: ");
+                            System.out.println("Email actual: " + prof.getEmailProfesorM() + " Email nuevo: ");
                             do {
                                 captura = sc.nextLine();
                                 if (!validacion.validarEmail(captura)) {
-                                    System.out.print("El Email no es correcto");
+                                    System.out.println("El Email no es correcto");
                                 }
-                            } while (!validacion.getString(1, 45, captura));
+                            }
+                          /* Cambios V3.0
+                           *      while (!validacion.getString(1, 45, captura));
                             prof.setEmailProfesorM(captura);
                             metodos.modificarProfesor(prof);
                             break;
+                        */
+                          while (!validacion.validarEmail(captura));
+                            prof.setEmailProfesorM(captura);
+                            metodos.modificarProfesor(prof);
+                            break;
+                        // Hasta aki los cambios
                         case 5:
-                            System.out.print("Despacho actual: " + prof.getDespachoM() + " Despacho nuevo: ");
+                            System.out.println("Despacho actual: " + prof.getDespachoM() + " Despacho nuevo: ");
                             do {
                                 captura = sc.nextLine();
                                 if (!validacion.getString(0, 4, captura)) {
-                                    System.out.print("El despacho debe contener entre 0 y 4 caracteres");
+                                    System.out.println("El despacho debe contener entre 0 y 4 caracteres");
                                 }
                             } while (!validacion.getString(0, 4, captura));
                             prof.setDespachoM(captura);
@@ -1102,6 +1366,17 @@ public class Interfaz {
                             }
                             break;
                         case 0:
+                            /* Cambios V3.0 Añadidos hasta el break
+                             **/
+                            System.out.println("DETALLES DEL PROFESOR DESPUES DE LOS CAMBIOS");
+                            System.out.println("");
+                            System.out.println(" NOMBRE: " + prof.getNombreM());
+                            System.out.println(" PRIMER APELLIDO: " + prof.getApe1M());
+                            System.out.println(" SEGUNDO APELLIDO: " + prof.getApe2M());
+                            System.out.println(" EMAIL: " + prof.getEmailProfesorM());
+                            System.out.println(" DESPACHO: " + prof.getDespachoM());
+                            System.out.println("pulsa enter para continuar");
+                            sc.nextLine();
                             break;
                     }
                 } while (opcionCampos != 0);
@@ -1135,7 +1410,7 @@ public class Interfaz {
         return lista.get(k - 1);
     }
 
-    /*
+    /* Cambios V 3.0 Añadidos sin implementar en lo entregado
     Jm. 
     */
     private void cambiarProfesorTfg(int idTfg, int idProfesor) {
