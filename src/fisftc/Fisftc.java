@@ -13,6 +13,7 @@ import java.sql.SQLException;
  */
 // 
 public class Fisftc {
+<<<<<<< HEAD
     public Fisftc() throws SQLException{
         Interfaz interfaz = new Interfaz();
     }
@@ -22,6 +23,19 @@ public class Fisftc {
        Sentencias sn = new Sentencias();
        Conexion cn = sn.obtenerConexion();
        Fisftc aplicacion = new Fisftc();
+=======
+    /**
+     * @param args the command line arguments
+     */
+    public Fisftc() throws SQLException {
+      Interfaz interfaz = new Interfaz();  
+    }
+   
+    public static void main(String[] args) throws SQLException {
+        // TODO code application logic here
+        Fisftc aplicacion = new Fisftc();
+        
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
     }
 
 }

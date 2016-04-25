@@ -2,9 +2,15 @@ package fisftc;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+=======
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Scanner;
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -140,6 +146,7 @@ public class Sentencias {
              WHERE idTfg NOT IN (Select idTfg from alumno WHERE IDTFG is not NULL );
         */
 
+<<<<<<< HEAD
     }
 
     public ResultSet obtenerProfesores() {
@@ -268,6 +275,44 @@ public class Sentencias {
                     if (trazas) {
                         Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
                     }
+=======
+        if (!this.buscarTabla("tfg")) {
+            if (!this.buscarTabla("profesor")) {
+                if (!this.buscarTabla("alumno")) {
+                    cn.noSelect("CREATE TABLE profesor("
+                            + "  idProfesor INTEGER not null GENERATED ALWAYS AS IDENTITY,"
+                            + "  emailProfesor VARCHAR(45) not null,"                        
+                            + "  nombre VARCHAR(45) not null,"
+                            + "  ape1 VARCHAR(45),"
+                            + "  ape2 VARCHAR(45),"
+                            + "  despacho VARCHAR(4),"
+                            + "  PRIMARY KEY (idProfesor)"
+                            + ")");
+                    cn.noSelect("CREATE TABLE alumno("
+                            + "  idAlumno INTEGER not null GENERATED ALWAYS AS IDENTITY,"
+                            + "  emailAlumno VARCHAR(45) not null,"                           
+                            + "  numMat VARCHAR(6) not null,"
+                            + "  nombre VARCHAR(45) not null,"
+                            + "  ape1 VARCHAR(45),"
+                            + "  ape2 VARCHAR(45),"
+                            + " PRIMARY KEY (idAlumno)"
+                            + ")");
+                    cn.noSelect("CREATE TABLE tfg("
+                            + "  idTfg INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY,"
+                            + "  idProfesor INTEGER NOT NULL CONSTRAINT fk_profesor"
+                            + "  REFERENCES profesor ON DELETE CASCADE,"
+                            + "  idAlumno INTEGER CONSTRAINT fk_alumno"
+                            + "  REFERENCES alumno,"
+                            + "  titulo VARCHAR(45) not null,"
+                            + "  descripcion VARCHAR(300),"
+                            + "  convocatoria VARCHAR(2) not null,"
+                            + "  fechaRegistro DATE NOT NULL,"                  // introducir con este formato '2016-03-11'
+                            + "  fechaDefensa DATE,"
+                            + "  notaFinal INTEGER,"
+                            + "  fechaAsignacion DATE,"
+                            + "  PRIMARY KEY (idTfg)"
+                            + ")");                 
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
                 }
             
             }
@@ -396,7 +441,16 @@ public class Sentencias {
 
         return exito;
     }
+    
+       public void insertarTFG(int idProf) {
+        Calendar c = new GregorianCalendar();
+        int dia = c.get(Calendar.DATE);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int año = c.get(Calendar.YEAR);
+        String titulo;
+        System.out.println("Introduce el titulo del TFG:");
 
+<<<<<<< HEAD
     /*
     Jm Tiempo 15 minutos
     @Param profesor
@@ -536,6 +590,49 @@ public class Sentencias {
                 }
                 return encontrado;
             }
+=======
+        titulo = scan.nextLine();
+
+        cn.noSelect("INSERT INTO tfg (titulo,idprofesor,convocatoria,fecharegistro)values('" + titulo + "'," + idProf + ",0,'" + año + "-" + mes + "-" + dia + "')");
+    }
+
+    public void insertarTFG(int idProf, int idAlum) {
+        Calendar c = new GregorianCalendar();
+        int dia = c.get(Calendar.DATE);
+        int mes = c.get(Calendar.MONTH) + 1;
+        int año = c.get(Calendar.YEAR);
+        String titulo;
+        System.out.println("Introduce el titulo del TFG:");
+        titulo = scan.nextLine();
+        cn.noSelect("INSERT INTO tfg (titulo,idprofesor,idalumno,convocatoria,fecharegistro)values('" + titulo + "'," + idProf + "," + idAlum + ",0,'" + año + "-" + mes + "-" + dia + "')");
+    }
+    
+ public void listaTFG() {
+        //cn.noSelect("delete from tfg where fecharegistro='2016-03-14'");
+        int cont = 1;
+        rs = cn.Select("Select t1.idTfg,  t1.titulo, t1.convocatoria, p1.idProfesor, p1.nombre, p1.ape1, p1.ape2, p1.emailProfesor "
+                + "FROM tfg t1, profesor p1 "
+                + "WHERE t1.idProfesor = p1.idProfesor AND "
+                + "idAlumno IS NULL ");
+        try {
+            System.out.println("CAMBIANDOLO .....");
+            while (rs.next()) {
+                System.out.print(cont + " ");
+                System.out.println(rs.getString("idTfg") + " - ");
+//                System.out.println(rs.getString("t1.idTfg") + " - ");            
+                System.out.println(rs.getString("titulo") + " - ");
+
+                System.out.println(rs.getString("convocatoria") + " - ");
+                System.out.println(rs.getString("idProfesor") + " - ");
+                System.out.println(rs.getString("nombre") + " - ");
+                System.out.println(rs.getString("ape1") + " - ");
+                System.out.println(rs.getString("ape2") + " - ");
+                System.out.println(rs.getString("emailProfesor") + " - ");
+                
+                            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
         }
         for (int i = 0; i < esta.length; i++) {
             if (!esta[i]) {
@@ -544,6 +641,7 @@ public class Sentencias {
         }
         return encontrado;
     }
+<<<<<<< HEAD
 
     // solo para el desarrollo
     public void listarTablas() {
@@ -552,22 +650,149 @@ public class Sentencias {
                 rs = cn.obtenerTablas();
                 while (rs.next()) {
                     System.out.println(rs.getString("TABLE_NAME"));
+=======
+ 
+ 
+ 
+ public int mostrarProfesor() {
+        Scanner sc = new Scanner(System.in);
+        int cont;
+        int opcion = 0;
+        int id = 0;
+        System.out.println("******Profesores registrados******");
+
+        do {
+            cont = 1;
+            rs = cn.Select("Select idprofesor,nombre,apellido1,apellido2,despacho from profesor");
+            //cn.noSelect("delete from profesor where nombre='pepe'");
+            try {
+                while (rs.next()) {
+                    System.out.print(cont + " ");
+                    System.out.println(rs.getString("nombre") + " " + rs.getString("ape1") + " " + rs.getString("ape2") + " " + rs.getInt("despacho"));
+                    cont++;
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            System.out.print("Que profesor es (pon el numero): ");
+            System.out.println("[0] Para salir");
+            try {
+                opcion = sc.nextInt();
+            } catch (Exception e) {
+                System.out.println("[ERROR]");
+                sc.next();
+                opcion = 0;
+            }
+
+        } while (0 < opcion && opcion > cont);
+
+        if (opcion != 0) {
+            rs = cn.Select("Select idprofesor,nombre,apellido1,apellido2,despacho from profesor");
+            cont = 1;
+            try {
+                while (rs.next()) {
+                    if (opcion == cont) {
+                        id = rs.getInt("idProfesor");
+                    }
+                    cont++;
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
 
+<<<<<<< HEAD
     }
 
 public void listarDatosIniciales() {
+=======
+        return id;
+    }
+
+      
+    public boolean comprobarAlumno(String email) throws SQLException {
+        boolean result = false;
+        rs = cn.Select("Select * from alumno "  
+                        + "WHERE emailAlumno = '"+email+"'");
+        if (rs.next() ){ 
+            result = true;
+        }
+        return result;   
+    }
+    
+    public boolean comprobarProfesor(String email) throws SQLException {
+        boolean result = false;
+        rs = cn.Select("Select * from profesor "  
+                        + "WHERE emailProfesor = '"+email+"'");
+        if (rs.next() ){ 
+            result = true;
+        }
+        return result;   
+    }
+ 
+  public void insertarProfesor(String nombre, String ape1, String ape2, String email, int despacho) {
+        cn.noSelect("INSERT INTO profesor (nombre, ape1, ape2, emailProfesor, despacho) "
+                        + "VALUES ('"+nombre+"', '"+ape1+"', '"+ape2+"','"+email+"', '"+despacho+"' )");        
+    }
+  
+  public void insertarAlumno(String nombre, String ape1, String ape2, String email, String numMat) {
+        cn.noSelect("INSERT INTO alumno (nombre, ape1, ape2, emailAlumno, numMat) "
+                        + "VALUES ('"+nombre+"', '"+ape1+"', '"+ape2+"','"+email+"', '"+numMat+"' )");        
+    }
+
+  public void borrarProfesor(String email) {
+        cn.noSelect("DELETE * FROM profesor "
+                        + "WHERE emailProfesor = '"+email+"' )");        
+    }
+  
+ public void borrarAlumno(String email) {
+        cn.noSelect("DELETE * FROM alumno "
+                        + "WHERE emailAlumno = '"+email+"' )");        
+    }
+  public ResultSet listarProfesores() {
+      return rs = cn.Select("SELECT * FROM profesor");
+  }
+  public ResultSet listarAlumnos() {
+      return rs = cn.Select("SELECT * FROM alumno");
+  }
+  public ResultSet listarTfg() {
+      return rs = cn.Select("SELECT * FROM tfg");
+  }
+  
+    
+    public void insertarDatosIniciales() {      
+        cn.noSelect("INSERT INTO profesor (nombre, emailProfesor)"         // Muestra de sentencia para insercion de un SOLO campo
+                    + "VALUES ('juan', 'juan@upm.es')");
+ 
+       cn.noSelect("INSERT INTO profesor (nombre, ape1, ape2, emailProfesor, despacho)"      // Muestra de sentencia para insercion de varios campos especificados
+                        + "VALUES ('Jose', 'Martin', 'Fernandez', 'jmartinf@upm.es', '1105')") ;
+        
+        cn.noSelect("INSERT INTO alumno (numMat, nombre, ape1, ape2, emailAlumno)"
+                        + "VALUES ('AA0045', 'Eduardo', 'Navarro', 'Del Este', 'edu@alumnos.upm.es')");
+ 
+        cn.noSelect("INSERT INTO tfg (idProfesor, idAlumno, titulo, descripcion, convocatoria, fechaRegistro)" 
+                           + "VALUES (1, 1, 'La obsolescencia programada II', 'Este es el campo de la descripción de la obsolescencia programada',"
+                           +"'03', '2015-11-23')");
+         cn.noSelect("INSERT INTO tfg (idProfesor,  titulo, descripcion, convocatoria, fechaRegistro)" 
+                           + "VALUES (1, 'La obsolescencia programada', 'Este es el campo de la descripción de la obsolescencia programada.II',"
+                           +"'03', '2015-11-23')");
+                           
+       }
+    
+        /* Codigo de prueba Jm
+        Quitar cuando se entregue
+*/
+    
+    public void listarDatosIniciales() {
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
         rs = cn.Select("Select * from profesor");    
         try {
             while (rs.next()) {
                 System.out.print("Id de Profesor: " + rs.getString("idProfesor")+ "; ");
                 System.out.print("Nombre: " + rs.getString("nombre")+ " ");
                 System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
-                System.out.print("Email: " + rs.getString ("email") + "; ");
+                System.out.print("Email: " + rs.getString ("emailProfesor") + "; ");
                 System.out.println ("Despacho " + rs.getString("despacho"));
             }
         } catch (SQLException ex) {
@@ -579,7 +804,7 @@ public void listarDatosIniciales() {
                 System.out.print("Id de Alumno: " + rs.getString("idAlumno")+ "; ");
                 System.out.print("Nombre: " + rs.getString("nombre")+ " ");
                 System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
-                System.out.println("Email: " + rs.getString ("email") + " ");
+                System.out.println("Email: " + rs.getString ("emailAlumno") + " ");
                 System.out.println();
             }
         } catch (SQLException ex) {
@@ -601,26 +826,43 @@ public void listarDatosIniciales() {
             Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
-    
-    public void insertarDatosIniciales() {      
-        cn.noSelect("INSERT INTO profesor (nombre)"         // Muestra de sentencia para insercion de un SOLO campo
-                    + "VALUES ('juan')");
- 
-       cn.noSelect("INSERT INTO profesor (nombre, ape1, ape2, email, despacho)"      // Muestra de sentencia para insercion de varios campos especificados
-                        + "VALUES ('Jose', 'Martin', 'Fernandez', 'jmartinf@upm.es', 1105)") ;
-        
-        cn.noSelect("INSERT INTO alumno (numMat, nombre, ape1, ape2, email)"
-                        + "VALUES ('AA0045', 'Eduardo', 'Navarro', 'Del Este', 'edu@alumnos.upm.es')");
- 
-        cn.noSelect("INSERT INTO tfg (idProfesor, idAlumno, titulo, descripcion, convocatoria, fechaRegistro)" 
-                           + "VALUES (1, 1, 'La obsolescencia programada', 'Este es el campo de la descripción de la obsolescencia programada',"
-                           +"'03', '2015-11-23')");
-                           
-       }
+
+    // solo para el desarrollo
+    public void listarTablas() {
+        try {
+            rs = cn.obtenerTablas();
+            while (rs.next()) {
+                System.out.println(rs.getString("TABLE_NAME"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    // solo para el desarrollo
+    public boolean buscarTabla(String s) {
+        boolean encontrado = false;
+
+        try {
+            rs = cn.obtenerTablas();
+            while (rs.next()) {
+
+                if (rs.getString("TABLE_NAME").contentEquals(s.toUpperCase())) {
+                    encontrado = true;
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            return encontrado;
+        }
+    }
+
  /*
   Fin de codigo de prueba
  */   
 
+<<<<<<< HEAD
     /**
      *
      * Obtiene de los alumnos que cuentan con un trabajo y que o bien no estan
@@ -707,5 +949,7 @@ public void listarDatosIniciales() {
     }
 
 
+=======
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
 
 }

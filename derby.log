@@ -1,8 +1,15 @@
 ----------------------------------------------------------------
+<<<<<<< HEAD
 Mon Apr 18 17:57:18 CEST 2016:
 Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-2a17-1e7e-00000ec864a8 
 on database directory /Users/jmanuel/NetBeansProjects/Fisftc/.\DB\Derby.DB with class loader sun.misc.Launcher$AppClassLoader@4e25154f 
 Loaded from file:/Users/jmanuel/Desktop/derby.jar
+=======
+Fri Mar 18 21:24:07 CET 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0153-8b66-3f40-0000071a3b68 
+on database directory /Users/jm/NetBeansProjects/Fisftc/.\DB\Derby.DB with class loader sun.misc.Launcher$AppClassLoader@33909752 
+Loaded from file:/Users/jm/Desktop/derby.jar
+>>>>>>> Nuevo-enlace-a-base-de-datos(mio)
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_77-b03
 user.dir=/Users/jmanuel/NetBeansProjects/Fisftc
