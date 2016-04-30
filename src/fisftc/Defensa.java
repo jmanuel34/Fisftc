@@ -1,5 +1,7 @@
 package fisftc;
 
+import java.util.Date;
+
 public class Defensa {
 
     static final String idTfg = "idTfg";
@@ -19,8 +21,8 @@ public class Defensa {
         this.idTfgM = 0;
         this.idAlumnoM = 0;
         this.idConvocatoriaM = 0;
-        this.fechaDefensaM = "";
-        this.notaM = 0;
+        this.fechaDefensaM = null;
+        this.notaM = -1;// Así marcaremos que no está puesta la nota aún
     }
 
     public int getIdTfgM() {

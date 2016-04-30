@@ -10,7 +10,7 @@ public class Conexion {
     private static ResultSet rs;
     private static Statement stat;
     private static boolean exito;
-    private final boolean trazas = true;
+    private static final boolean trazas = false;
 
     public Conexion() {
         conexion = null;

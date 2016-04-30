@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 
 public class Validacion {
 
-    boolean trazas;
+    private static final boolean trazas = false;
     Scanner sc = new Scanner(System.in);
     private static final String CARACTERES_CORREO = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
             + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
@@ -95,21 +95,47 @@ public class Validacion {
         return resul;
 
     }
-
+    
     /**
+     * Permite comrobar que un entero está entre dos valores.
+     *
+     * @param min longitud mínima del String
+     * @param max longitud máxima del String
+     * @return true si el String es de longitud entre min y max
+     */
+    public boolean getFloat(String st, float min, float max) {
+        float entero = 0;
+        boolean resul = false;
+        try {
+            entero = Float.parseFloat(st);
+            if (entero >= min && entero <= max) {
+                resul = true;
+            }
+        } catch (Exception e) {
+        }
+
+        return resul;
+
+    }
+
+/**
      * Método para validar email. Comprueba que tiene el formato correcto.
      *
      * @param email correo para validar
      * @return true si correo es válido, falso si no lo es
      */
     public static boolean validarEmail(String email) {
-
+        boolean exito = false;
         // convierte el correo introducido en un patrón
         Pattern pattern = Pattern.compile(CARACTERES_CORREO);
 
         // compara el patrón con el correo
         Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
+        if(matcher.matches()){
+            Metodos met = new Metodos();
+            exito = !met.comprobarCorreo(email);
+        }
+        return exito;
 
     }
 
@@ -145,13 +171,13 @@ public class Validacion {
                 try {
                     LocalDate.of(datos[0], datos[1], datos[2]);
 
-                    if (datos[0] > año && datos[0] < año + 2) {
+                    if (datos[0] < año) {
                         retorno = true;
                     }
-                    if (retorno || datos[0] == año && datos[0] < año + 2 && datos[1] > mes) {
+                    if (retorno || datos[0] == año  && datos[1] < mes) {
                         retorno = true;
                     }
-                    if (retorno || datos[0] == año && datos[0] < año + 2 && datos[1] == mes && datos[2] >= dia) {
+                    if (retorno || datos[0] == año  && datos[1] == mes && datos[2] <= dia) {
                         retorno = true;
                     }
 

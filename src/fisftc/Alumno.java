@@ -34,11 +34,12 @@ public class Alumno {
     /*Constructor alumno*/
     public Alumno() {
         this.idAlumnoM = 0;
-        this.nombreM = "";
-        this.ape1M = "";
-        this.ape2M = "";
-        this.emailAlumnoM = "";
-        this.numMatM = "";
+        this.idtfgM = 0;
+        this.nombreM = null;
+        this.ape1M = null;
+        this.ape2M = null;
+        this.emailAlumnoM = null;
+        this.numMatM = null;
     }
 
     public int getIdAlumnoM() {

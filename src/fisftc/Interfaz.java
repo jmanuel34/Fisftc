@@ -1,6 +1,5 @@
 package fisftc;
 
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -9,227 +8,11 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Interfaz {
-=======
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-public class Interfaz {
-        protected Sentencias sen;
-    	Scanner sc = new Scanner(System.in);
-	int opcionMenu;
-        String rs;
-
-    public Interfaz () throws SQLException {
-         sen = new Sentencias(); 
-         sen.montarBase();
-         mostrarInterfaz();
-    }
-
- public void menuAltas() throws SQLException {
-     int opcion = -1;     
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println();
-        System.out.println();
-        System.out.println(" |---------------- 1.- MENU DE ALTAS --------------|");
-        do {
-
-            System.out.println("    1.- Alta Profesor.");
-            System.out.println("    2.- Alta Alumno.");
-            System.out.println("    3.- Alta TFG.");    
-            System.out.println("");
-            System.out.println("");
-            System.out.println();
-            System.out.println("    0- Finalizar.");
-            System.out.print("Opción deseada: ");
-            opcion = sc.nextInt();
-        switch (opcion) {
-                case 1:
-                    altaProfesor();
-                    break;
-                case 2:
-                    altaAlumno();
-                    break;
-                case 3:
-//                    altaTfg();                   
-                    break;
-                default:
-                    break;
-            }
-        } while (opcionMenu != 0);
-    }
-    
-    private void altaProfesor() throws SQLException  {
-        boolean result;
-        Scanner sc = new Scanner(System.in);
-        String nombre, ape1, ape2, email;
-        int desp = 0;
-            System.out.println("******NUEVO PROFESOR******");
-            System.out.print("Introduce el nombre del profesor: ");
-            nombre = sc.nextLine();
-            System.out.print("Introduce el primer apellido: ");
-            ape1 = sc.nextLine();
-            System.out.print("Introduce el segundo apellido: ");
-            ape2 = sc.nextLine();
-            System.out.print("Introduce el email: ");
-            email = sc.nextLine();
-            System.out.print("Introduce el número de despacho(4 dígitos): ");
-            desp = sc.nextInt();
-            // Comprobar que el profesor no existe
-            result = sen.comprobarProfesor(email);
-            if (!result) {
-                sen.insertarProfesor(nombre, ape1, ape2, email, desp);
-                System.out.println ("Profesor insertado correctamente. ");
-            }
-            else {
-                System.out.println("!!! Error en la inserción de profesor. ");
-                System.out.println("!!! El profesor ya existe. ");
-            }
-    }
-
-    private void altaAlumno() throws SQLException {
-        boolean result;
-        Scanner sc = new Scanner(System.in);
-        String nombre, ape1, ape2, email;
-        String numMat;
-        boolean repetido = false;
-        boolean continuar = true;
-        String opcion = "0";
-            System.out.println("****** NUEVO ALUMNO******");
-            System.out.print("Introduce el nombre del Alumno: ");
-            nombre = sc.nextLine();
-            System.out.print("Introduce el primer apellido: ");
-            ape1 = sc.nextLine();
-            System.out.print("Introduce el segundo apellido: ");
-            ape2 = sc.nextLine();
-            System.out.print("Introduce el email: ");
-            email = sc.nextLine();
-            System.out.print("Introduce el número de matrícula(6 caracteres): ");
-            numMat = sc.nextLine();
-            result = sen.comprobarAlumno(email);
-            if (!result) {
-                sen.insertarAlumno(nombre, ape1, ape2, email, numMat);
-            } else {
-                System.out.println("!!! Error en la inserción de Alumno. ");
-                System.out.println("!!! El Alumno ya existe. ");
-            }
-        } 
-     private void bajaProfesor() throws SQLException  {
-        boolean result;
-        Scanner sc = new Scanner(System.in);
-        String email;
-            System.out.println("****** PROCEDIMIENTO DE BAJA PARA PROFESOR ******");
-            System.out.print("Introduce el email: ");
-            email = sc.nextLine();
-            result = sen.comprobarProfesor(email);
-            if (result) {
-                sen.borrarProfesor(email);
-                System.out.println ("Profesor borrado correctamente. ");
-            }
-            else {
-                System.out.println("!!! Error en la baja de Profesor. ");
-                System.out.println("!!! El email de Profesor NO existe. ");
-            }
-    }
-
-    private void bajaAlumno() throws SQLException {
-        boolean result;
-        Scanner sc = new Scanner(System.in);
-        String email;
-            System.out.println("****** PROCEDIMIENTO DE BAJA PARA ALUMNO ******");
-            System.out.print("Introduce el email: ");
-            email = sc.nextLine();
-            result = sen.comprobarAlumno(email);
-            if (result) {
-                sen.borrarAlumno(email);
-            } else {
-                System.out.println("!!! Error en la baja de Alumno. ");
-                System.out.println("!!! El email de Alumno NO existe. ");
-            }
-        } 
-
-    private void menuBajas() throws SQLException {
-        int opcion = -1;     
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println();
-        System.out.println();
-        System.out.println(" |---------------- 2.- MENU DE BAJAS --------------|");
-        do {
-
-            System.out.println("    1.- Baja Profesor.");
-            System.out.println("    2.- Baja Alumno.");
-            System.out.println("    3.- Baja TFG.");    
-            System.out.println("");
-            System.out.println("");
-            System.out.println();
-            System.out.println("    0- Finalizar.");
-            System.out.print("Opción deseada: ");
-            opcion = sc.nextInt();
-        switch (opcion) {
-                case 1:
-                    bajaProfesor();
-                    break;
-                case 2:
-                    bajaAlumno();
-                    break;
-                case 3:
-//                    bajaTfg();                   
-                    break;
-                default:
-                    break;
-            }
-        } while (opcionMenu != 0);
-
-    }
-   private void menuInformes() throws SQLException {
-        int opcion = -1;     
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println();
-        System.out.println();
-        System.out.println(" |---------------- 5.- MENU DE INFORMES --------------|");
-        do {
-
-            System.out.println("    1.- Informes de Profesores.");
-            System.out.println("    2.- Informes de Alumnos.");
-            System.out.println("    3.- Informes de TFGs.");    
-            System.out.println("");
-            System.out.println("");
-            System.out.println();
-            System.out.println("    0- Finalizar.");
-            System.out.print("Opción deseada: ");
-            opcion = sc.nextInt();
-        switch (opcion) {
-                case 1:
-                    listarProfesores();
-                    break;
-                case 2:
-                    listarAlumnos();
-                    break;
-                case 3:
-                    listarTfg();                   
-                    break;
-                default:
-                    break;
-            }
-        } while (opcionMenu != 0);
->>>>>>> Nuevo-enlace-a-base-de-datos(mio)
 
     private Metodos metodos;
     private Validacion validacion;
-    private boolean trazas = true;
-    boolean prueba;
-    int probar;
-
-    Scanner sc = new Scanner(System.in);
-    int opcionMenu;
+    private boolean trazas = false;
+    private Scanner sc = new Scanner(System.in);
 
     public Interfaz() {
         validacion = new Validacion();
@@ -244,47 +27,80 @@ public class Interfaz {
         do {
 
             MostrarMP();
-            for (int i = 0; i < 3; i++) {
-                System.out.println("");
-            }
-            System.out.println("    Seleccione una opcion:  ");
+            System.out.println("\tSeleccione una opción: ");
 
             do {
                 captura = sc.nextLine();
                 if (!validacion.getInt(captura, 0, 6)) {
-                    System.out.print("Opcion no valida, seleccione otra:");
+                    System.out.print("Opción no válida, seleccione otra: ");
                 }
             } while (!validacion.getInt(captura, 0, 6));
 
             opcionMP = Integer.parseInt(captura);
+
             switch (opcionMP) {
                 case 1:/*MOSTRAR TFG*/
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     ArrayList<TFG> lista;
                     lista = new ArrayList<TFG>();
                     metodos.obtenerTfgDisponible(lista);
                     if (!lista.isEmpty()) {
                         mostarTFGDisponibles(lista);
                     } else {
-                        System.out.println("Lista Vacia...");
-                        System.out.println("pulse cualquier tecla para continuar");
+                        System.out.println("No hay TFGs almacenados.");
+                        System.out.println("Pulse ENTER para continuar.");
                         sc.nextLine();
                     }
-
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     break;
                 case 2:
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     this.aniadirTFG();
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     break;
                 case 3:
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     this.asignarAlumnoATfg();
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     break;
                 case 4:
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     this.mostrarDefensas();
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     break;
                 case 5:
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     this.aniadirDefensa();
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     break;
                 case 6:
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     this.menuOtrasOpciones();
+                    for (int i = 0; i < 15; i++) {
+                        System.out.println();
+                    }
                     break;
                 case 0:
                     break;
@@ -297,23 +113,19 @@ public class Interfaz {
      * Funcion que muestra las opiones del menu principal al usuario
      */
     private void MostrarMP() {
-        for (int i = 0; i < 24; i++) {
-            System.out.println("");
-        }
+        System.out.println("|---------------------------------------------------|");
+        System.out.println("|--Aplicación para la Gestíón de Trabajos (T.F.G.)--|");
+        System.out.println("|---------------------------------------------------|");
 
-        System.out.println("|--------------------------------------------------|");
-        System.out.println("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
-        System.out.println("|--------------------------------------------------|");
+        System.out.println("\t\t\tMENÚ PRINCIPAL\n");
 
-        System.out.println("			 MENU PRINCIPAL");
-        System.out.println("    1.- Listar TFG disponibles");
-        System.out.println("    2.- Añadir TFG");
-        System.out.println("    3.- Asignar TFG");
-        System.out.println("    4.- Archivo de defensas");
-        System.out.println("    5.- Añadir defensa");
-        System.out.println("    6.- Otras opciones");
-        System.out.println("    0.- SALIR");
-
+        System.out.println("\t[1] Listar TFG disponibles");
+        System.out.println("\t[2] Añadir TFG");
+        System.out.println("\t[3] Asignar TFG");
+        System.out.println("\t[4] Archivo de defensas");
+        System.out.println("\t[5] Añadir defensa");
+        System.out.println("\t[6] Otras opciones");
+        System.out.println("\n\t[0] SALIR");
     }
 
     private void asignarAlumnoATfg() {
@@ -323,22 +135,17 @@ public class Interfaz {
         if (!lista.isEmpty()) {
             int i = 0, k = -1;
             String aux;
-            for (int j = 0; j < 24; j++) {
-                System.out.println("");
-            }
-
-            System.out.println("Listado de TFG disponibles:");
+            System.out.println("Listado de TFG disponibles:\n");
 
             do {
-                System.out.println(i + 1 + "-   " + lista.get(i).getTituloM());
+                System.out.println("[" + (i + 1) + "]  " + lista.get(i).getTituloM());
                 i++;
             } while (i < lista.size());
-            System.out.println("");
-            System.out.println("Selecione un trabajo para ampliar:               0 Para salir");
+            System.out.println("\nElige una opción:\n\t[0] VOLVER");
             do {
                 aux = sc.nextLine();
                 if (!validacion.getInt(aux, 0, lista.size())) {
-                    System.out.print("Opcion no valida, seleccione otra:");
+                    System.out.print("Opción no válida, seleccione otra: ");
                 }
             } while (!validacion.getInt(aux, 0, lista.size()));
             k = Integer.parseInt(aux);
@@ -346,8 +153,8 @@ public class Interfaz {
                 this.ampliarTFG(lista.get(k - 1));
             }
         } else {
-            System.out.println("Lista Vacia...");
-            System.out.println("pulse cualquier tecla para continuar");
+            System.out.println("No hay TFGs disponibles.");
+            System.out.println("Pulse ENTER para continuar.");
             sc.nextLine();
         }
 
@@ -357,13 +164,12 @@ public class Interfaz {
         int i = -1;
         String aux;
         mostrarTFG(trabajo, metodos.obtenerProfesor(trabajo));
-        System.out.println(" OPCIONES");
-        System.out.println(" 1- Asignar Alumno");
-        System.out.println(" 0- Volver");
+        System.out.println("\t[1]  Asignar Alumno");
+        System.out.println("\t[0]  VOLVER");
         do {
             aux = sc.nextLine();
             if (!validacion.getInt(aux, 0, 1)) {
-                System.out.print("Opcion no valida, seleccione otra:");
+                System.out.print("Opción no válida, seleccione otra: ");
             }
         } while (!validacion.getInt(aux, 0, 1));
         i = Integer.parseInt(aux);
@@ -385,29 +191,28 @@ public class Interfaz {
         TFG tfg = new TFG();
         Defensa def = new Defensa();
         Iterator<Convocatoria> iterConvocatoria;
-        Calendar c = new GregorianCalendar();
-        int anioActual = c.get(Calendar.YEAR);
+        boolean encontrado;
 
         metodos.obtenerAlumnosDefendibles(alumnoLista);
 
         contador = 1;
         Iterator<Alumno> iterAlumno = alumnoLista.iterator();
-        System.out.println("Alumnos a los que se le puede asignar Defensa:");
+        System.out.println("Alumnos a los que se le puede asignar defensa:");
         while (iterAlumno.hasNext()) {
             alum = iterAlumno.next();
             tfg = metodos.obtenerTFG(alum);
-            System.out.println("[" + contador + "]" + "  Nombre: " + alum.getNombreM()
+            System.out.println("[" + contador + "]" + "  Nombre: " + alum.getNombreM() 
                     + "\t Titulo: " + tfg.getTituloM());
             contador++;
         }
         if (contador > 1) {
-            System.out.println("Elige una opcion:\n [0] Salir");
+            System.out.println("Elige una opción:\n\t[0] VOLVER");
             do {
                 captura = sc.nextLine();
-                if (!validacion.getInt(captura, 0, contador)) {
-                    System.out.println("Opcion no valida, seleccione otra:");
+                if (!validacion.getInt(captura, 0, contador - 1)) {
+                    System.out.println("Opción no válida, seleccione otra:");
                 }
-            } while (!validacion.getInt(captura, 0, contador));
+            } while (!validacion.getInt(captura, 0, contador - 1));
 
             opcionAlumno = Integer.parseInt(captura);
 
@@ -416,44 +221,91 @@ public class Interfaz {
                 alum = alumnoLista.get(opcionAlumno - 1);
 
                 metodos.obtenerConvocatoria(convLista);
-                if (!convLista.isEmpty()) {
-                    System.out.println("Convocatorias que se le puede asignar Defensa:");
-                    iterConvocatoria = convLista.iterator();
-                    int i = 0;
-                    while (iterConvocatoria.hasNext()) {
-                        if (Integer.parseInt(iterConvocatoria.next().getAnioM()) < anioActual) {
-                            convLista.remove(i);
-                        }
-                        i++;
-                    }
 
-                    contador = 1;
-                    iterConvocatoria = convLista.iterator();
-                    while (iterConvocatoria.hasNext()) {
-                        conv = iterConvocatoria.next();
-                        System.out.println("[" + contador + "]" + "  Año: " + conv.getAnioM()
-                                + " Mes: " + conv.getMesM()
-                                + " Tipo: " + conv.getTipoM());
-                        contador++;
-                    }
-                    if (contador > 1) {
-                        do {
-                            captura = sc.nextLine();
-                            if (!validacion.getInt(captura, 0, contador)) {
-                                System.out.println("Opcion no valida, seleccione otra:");
-                            }
-                        } while (!validacion.getInt(captura, 0, contador));
+                System.out.println("Convocatorias que se le puede asignar defensa:");
 
+                contador = 2;
+                iterConvocatoria = convLista.iterator();
+                System.out.println("[1] Crear nueva convocatoria.");
+                while (iterConvocatoria.hasNext()) {
+                    conv = iterConvocatoria.next();
+                    System.out.println("[" + contador + "]" + "  Año: " + conv.getAnioM()
+                            + " Mes: " + conv.getMesM()
+                            + " Tipo: " + conv.getTipoM());
+                    contador++;
+                }
+                do {
+                    encontrado = false;
+                    captura = sc.nextLine();
+                    if (!validacion.getInt(captura, 0, contador - 1)) {
+                        System.out.println("Opción no válida, seleccione otra:");
+                    } else {
                         opcionConv = Integer.parseInt(captura);
+                        if (opcionConv > 1) {
+                            conv = convLista.get(opcionConv - 2);
+                            encontrado = metodos.validarDefensa(alum, conv);
+                            if (encontrado) {
+                                System.out.println("EL alumno ya contiene una defensa en esa convocatoria."
+                                        + "\n\t[1] Crear nueva convocatoria."
+                                        + "\n\t[0] MENÚ PRINCIPAL");
+                            }
+                        }
 
-                        if (opcionConv != 0) {
-                            conv = convLista.get(opcionConv - 1);
+                    }
+                } while (!validacion.getInt(captura, 0, contador - 1) || encontrado);
 
+                opcionConv = Integer.parseInt(captura);
+
+                if (contador > 2 && opcionConv >= 2) {
+
+                    conv = convLista.get(opcionConv - 2);
+
+                    def.setIdAlumnoM(alum.getIdAlumnoM());
+                    def.setIdTfgM(alum.getIdtfgM());
+                    def.setIdConvocatoriaM(conv.getidConvocatoriaM());
+
+                    System.out.println("Introduce el día");
+
+                    do {
+                        captura = sc.nextLine();
+                        captura = conv.getAnioM() + "-" + conv.getMesM() + "-" + captura;
+                        if (!validacion.validarFecha(captura)) {
+                            System.out.println("Día no válido.");
+                        }
+                    } while (!validacion.validarFecha(captura));
+
+                    def.setFechaDefensaM(captura);
+
+                    System.out.println("Introduzca nota:");
+                    do {
+                        captura = sc.nextLine();
+                        if (!validacion.getFloat(captura, 0, 10)) {
+                            System.out.println("Opción no válida, seleccione otra:");
+                        }
+                    } while (!validacion.getFloat(captura, 0, 10));
+
+                    def.setNotaM(Float.parseFloat(captura));
+
+                    if (metodos.aniadirDefensa(def)) {
+                        if (Float.parseFloat(captura) >= 5) {
+                            tfg = metodos.obtenerTFG(alum);
+                            tfg.setFinalizadoM(true);
+                            metodos.modificarTFG(tfg);
+                            System.out.println("Defensa guardada.");
+                            System.out.println("Pulse ENTER para continuar.");
+                            sc.nextLine();
+                        }
+                    }
+
+                } else if (opcionConv != 0) {
+
+                    if (Integer.parseInt(captura) == 1) {
+                        conv = this.crearConvocatoria();
+                        if (conv.getidConvocatoriaM() != 0) {
                             def.setIdAlumnoM(alum.getIdAlumnoM());
                             def.setIdTfgM(alum.getIdtfgM());
                             def.setIdConvocatoriaM(conv.getidConvocatoriaM());
-
-                            System.out.println("Introduce el dia");
+                            System.out.println("Introduce el día");
 
                             do {
                                 captura = sc.nextLine();
@@ -465,54 +317,54 @@ public class Interfaz {
 
                             def.setFechaDefensaM(captura);
 
-                            if (!metodos.aniadirDefensa(def) && trazas) {
-                                System.out.println("Error al introducir Defensa");
-                            } else {
-                                System.out.println("Exito al introducir Defensa");
+                            System.out.println("Introduzca nota:");
+                            do {
+                                captura = sc.nextLine();
+                                if (!validacion.getFloat(captura, 0, 10)) {
+                                    System.out.println("Opción no válida, seleccione otra:");
+                                }
+                            } while (!validacion.getFloat(captura, 0, 10));
+
+                            def.setNotaM(Float.parseFloat(captura));
+
+                            if (metodos.aniadirDefensa(def)) {
+                                if (Float.parseFloat(captura) >= 5) {
+                                    tfg = metodos.obtenerTFG(alum);
+                                    tfg.setFinalizadoM(true);
+                                    metodos.modificarTFG(tfg);
+                                    System.out.println("Defensa guardada.");
+                                    System.out.println("Pulse ENTER para continuar.");
+                                    sc.nextLine();
+                                }
+
                             }
+
                         }
                     }
-                } else {
-                    System.out.println("No hay Convocatorias que asignar a Defensa.");
-                    System.out.println("¿Deseas crear una nueva convocatoria?");
-                    System.out.println("[1] Si");
-                    System.out.println("[0] Salir");
 
-                    do {
-                        captura = sc.nextLine();
-                        if (!validacion.getInt(captura, 0, 1)) {
-                            System.out.println("Opcion no valida, seleccione otra:");
-                        }
-                    } while (!validacion.getInt(captura, 0, 1));
-
-                    if (Integer.parseInt(captura) == 1) {
-                        int id = this.crearConvocatoria();
-                        if (id != 0) {
-                            def.setIdAlumnoM(alum.getIdAlumnoM());
-                            def.setIdTfgM(alum.getIdtfgM());
-                            def.setIdConvocatoriaM(id);
-                        }
-                    }
                 }
 
             }
         } else {
-            System.out.println("No hay alumnos a los que asignar Defensa.");
+            System.out.println("No hay alumnos a los que asignar defensa.");
         }
 
     }
 
-    private int crearConvocatoria() {
+    private Convocatoria crearConvocatoria() {
         String captura;
         int opcion, id = 0;
         int[] datos = null;
         int i = 0;
         Convocatoria conv = new Convocatoria();
-        System.out.println("Introduce una fecha(yyyy-mm-dd):");
+        System.out.println("Introduce una fecha(yyyy-mm): ");
         do {
             captura = sc.nextLine();
+            captura = captura + "-01";
             if (!validacion.validarFecha(captura)) {
-                System.out.println("Fecha no valida.");
+                System.out.println("Fecha no válida.");
+                System.out.println("Revise el formato (yyyy-mm) y que\nla fecha sea"
+                        + " anterior a la actual.");
             }
         } while (!validacion.validarFecha(captura));
 
@@ -529,11 +381,11 @@ public class Interfaz {
         conv.setAnioM("" + datos[0]);
         conv.setMesM("" + datos[1]);
 
-        System.out.println("De caracter: \n[1]Ordinario \n[2]Extraordinario");
+        System.out.println("De carácter: \n\t[1]Ordinario \n\t[2]Extraordinario");
         do {
             captura = sc.nextLine();
             if (!validacion.getInt(captura, 0, 2)) {
-                System.out.println("Opcion no valida, seleccione otra:");
+                System.out.println("Opción no válida, seleccione otra:");
             }
         } while (!validacion.getInt(captura, 0, 2));
 
@@ -545,63 +397,11 @@ public class Interfaz {
         }
 
         if (opcion != 0) {
-            id = metodos.aniadirConvocatoria(conv);
+            conv.setidConvocatoriaM(metodos.aniadirConvocatoria(conv));
         }
-        return id;
+        return conv;
     }
-   private void listarProfesores() {
-       ResultSet rs;
-       rs = sen.listarProfesores();
-        try {
-            while (rs.next()) {
-                System.out.print("Id de Profesor: " + rs.getString("idProfesor")+ "; ");
-                System.out.print("Nombre: " + rs.getString("nombre")+ " ");
-                System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
-                System.out.print("Email: " + rs.getString ("emailProfesor") + "; ");
-                System.out.println ("Despacho " + rs.getString("despacho"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
-        }
-   }
-   
-   private void listarAlumnos() {
-       ResultSet rs;
-       rs = sen.listarAlumnos();
-       try {
-            while (rs.next()) {
-                System.out.print("Id de Alumno: " + rs.getString("idAlumno")+ "; ");
-                System.out.print("Nombre: " + rs.getString("nombre")+ " ");
-                System.out.print(rs.getString("ape1") +" " + rs.getString("ape2")+ "; ");
-                System.out.println("Email: " + rs.getString ("emailAlumno") + " ");
-                System.out.println();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-   }
-   private void listarTfg() {
-       ResultSet rs;
-       rs = sen.listarTfg();
-       try {
-            while (rs.next()) {
-                System.out.print("Id Tfg: " + rs.getString("idTfg")+ "; ");
-                System.out.print("Id Profesor: " + rs.getString("idProfesor")+ "; ");
-                System.out.print("Id Alumno: " + rs.getString("idAlumno")+ "; ");
-                
-                System.out.print("Titulo: " + rs.getString("titulo")+ "; ");
-                System.out.print("Descripcion: " +" " + rs.getString("descripcion")+ "; ");
-                System.out.println();
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Sentencias.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-   }
-       
- 
 
-<<<<<<< HEAD
     /**
      *
      * Esta función se encarga de pedir año y mes de convocatoria para luego
@@ -627,7 +427,7 @@ public class Interfaz {
 
         metodos.obtenerAnios(aniosConv);
 
-        System.out.println("Años de Defensa disponibles");
+        System.out.println("Años de defensa disponibles");
 
         if (!aniosConv.isEmpty()) {
 
@@ -640,21 +440,21 @@ public class Interfaz {
                 contador++;
             }
 
-            System.out.println("Marca el que desees");
-            System.out.println("[0] Salir");
+            System.out.println("Marca el que desees: ");
+            System.out.println("\t[0] SALIR");
 
             do {
                 captura = sc.nextLine();
-                if (!validacion.getInt(captura, 0, contador)) {
-                    System.out.print("Opcion no valida, seleccione otra:");
+                if (!validacion.getInt(captura, 0, contador-1)) {
+                    System.out.print("Opción no válida, seleccione otra:");
                 }
-            } while (!validacion.getInt(captura, 0, contador));
+            } while (!validacion.getInt(captura, 0, contador-1));
 
             opcionAnio = Integer.parseInt(captura);
 
         } else {
-            System.out.println("No hay defensas disponibles");
-            System.out.println("pulse cualquier tecla para continuar");
+            System.out.println("No hay defensas disponibles.");
+            System.out.println("Pulse ENTER para continuar.");
             sc.nextLine();
         }
 
@@ -672,15 +472,15 @@ public class Interfaz {
                     contador++;
                 }
 
-                System.out.println("Marca el que desees");
-                System.out.println("[0] Salir");
+                System.out.println("Marca el que desees: ");
+                System.out.println("\t[0] SALIR");
 
                 do {
                     captura = sc.nextLine();
-                    if (!validacion.getInt(captura, 0, contador)) {
-                        System.out.print("Opcion no valida, seleccione otra:");
+                    if (!validacion.getInt(captura, 0, contador - 1)) {
+                        System.out.print("Opción no válida, seleccione otra:");
                     }
-                } while (!validacion.getInt(captura, 0, contador));
+                } while (!validacion.getInt(captura, 0, contador - 1));
 
                 opcionMes = Integer.parseInt(captura);
 
@@ -723,20 +523,18 @@ public class Interfaz {
                                 tfg = tfgLista.get(tfgEncontrado);
                                 alumno = alumnoLista.get(alumnoEncontrado);
 
-                                System.out.println("Titulo: " + tfg.getTituloM()
-                                        + "  Alumno: " + alumno.getNombreM()
-                                        + "  Año: " + conv.getAnioM()
-                                        + "  Mes: " + conv.getMesM()
-                                        + "  Tipo: " + conv.getTipoM()
-                                        + "  Nota: " + def.getNotaM());
+                                System.out.println("TÍTULO: " + tfg.getTituloM()
+                                        + "  ALUMNO: " + alumno.getNombreM()
+                                        + "\n  AÑO: " + conv.getAnioM()
+                                        + "  MES: " + conv.getMesM()
+                                        + "\n  TIPO: " + conv.getTipoM()
+                                        + "  NOTA: " + def.getNotaM());
                             }
                         }
                     }
-                    System.out.println("pulse cualquier tecla para continuar");
+                    System.out.println("Pulse ENTER para continuar.");
                     sc.nextLine();
                 }
-            } else if (trazas) {
-                System.out.println("OJO meses vacios");
             }
         }
 
@@ -751,22 +549,17 @@ public class Interfaz {
     private void mostarTFGDisponibles(ArrayList<TFG> lista) {
         int i = 0, k = -1;
         String aux;
-        for (int j = 0; j < 24; j++) {
-            System.out.println("");
-        }
-
-        System.out.println("Listado de TFG disponibles:");
+        System.out.println("Listado de TFG disponibles:\n");
 
         do {
-            System.out.println(i + 1 + "-   " + lista.get(i).getTituloM());
+            System.out.println("[" + (i + 1) + "] " + lista.get(i).getTituloM());
             i++;
         } while (i < lista.size());
-        System.out.println("");
-        System.out.println("Selecione un trabajo para ampliar:               0 Para salir");
+        System.out.println("\nSeleccione un trabajo o [0] para SALIR: ");
         do {
             aux = sc.nextLine();
             if (!validacion.getInt(aux, 0, lista.size())) {
-                System.out.print("Opcion no valida, seleccione otra:");
+                System.out.print("Opción no válida, seleccione otra: ");
             }
         } while (!validacion.getInt(aux, 0, lista.size()));
         k = Integer.parseInt(aux);
@@ -774,7 +567,7 @@ public class Interfaz {
             mostrarTFG(lista.get(k - 1), metodos.obtenerProfesor(lista.get(k - 1)));
         }
 
-        System.out.println("pulse cualquier tecla para continuar");
+        System.out.println("Pulse ENTER para continuar.");
         sc.nextLine();
 
     }
@@ -783,118 +576,41 @@ public class Interfaz {
         String aux;
         int idAlumno;
         Alumno alum = new Alumno();
-        System.out.println("Introduzca el nombre del alumno");
+        System.out.println("Introduzca el nombre del alumno: ");
         aux = sc.nextLine();
         alum.setNombreM(aux);
-        System.out.println("Introduzca el primer apellido del alumno");
+        System.out.println("Introduzca el primer apellido del alumno: ");
         aux = sc.nextLine();
         alum.setApe1M(aux);
-        System.out.println("Introduzca el segundo apellido del alumno");
+        System.out.println("Introduzca el segundo apellido del alumno: ");
         aux = sc.nextLine();
         alum.setApe2M(aux);
-        System.out.println("Introduzca el email del alumno");
+        System.out.println("Introduzca el email del alumno: ");
         do {
             aux = sc.nextLine();
             if (!validacion.validarEmail(aux)) {
-                System.out.print("Opcion no valida, seleccione otra:");
+                System.out.print("Opción no válida, seleccione otra:");
             }
         } while (!validacion.validarEmail(aux));
 
         alum.setEmailAlumnoM(aux);
-        alum.setIdtfgM(trabajo.getIdTfgM());
+        System.out.println("Introduzca el número de matrícula del alumno: ");
+        do {
+            aux = sc.nextLine();
+            if (!validacion.getString(6, 6, aux)) {
+                System.out.print("Opcion no valida. Debe tener 6 caracteres: ");
+            }
+        } while (!validacion.getString(6, 6, aux));
 
+        alum.setNumMatM(aux);
+        alum.setIdtfgM(trabajo.getIdTfgM());
         idAlumno = metodos.aniadirAlumno(alum);
         alum.setIdAlumnoM(idAlumno);
         alum.setIdtfgM(trabajo.getIdTfgM());
+
         metodos.modificarAlumno(alum);
-        if (trazas) {
-            System.out.println("OJO" + idAlumno);
-            System.out.println("OJO--" + trabajo.getIdTfgM());
-        }
     }
 
-    private void borrarProfesor() {
-        String aux;
-        int opcion = -1;
-        Profesor profesor = new Profesor();
-        Iterator<TFG> iteradorTfg;
-        ArrayList<TFG> tfgList = new ArrayList<TFG>();
-        System.out.println ("Borrando profesor ");
-        System.out.println("Introduzca el email del profesor: ");
-        aux = sc.nextLine();
-        do {
-            aux = sc.nextLine();
-            if (!validacion.validarEmail(aux)) {
-                System.out.print("Opcion no valida, seleccione otra:");
-            }
-        } while (!validacion.validarEmail(aux));
-        profesor = metodos.obtenerProfesor(aux);
-        if (profesor.getEmailProfesorM()!= null ) {
-            // Falta: 
-            // Contemplar la posibilidad de, si no tiene TFGs, quitarlo de la base de datos
-            metodos.obtenerTFGProfesor(tfgList, profesor);
-            iteradorTfg = tfgList.iterator();
-            
-            while (opcion!= 0 && iteradorTfg.hasNext()) {
-                System.out.println ("El trabajo de titulo " + iteradorTfg.next().getTituloM()+" Esta asignado a " +profesor.getEmailProfesorM());
-                opcion = menuCambioTfg(opcion);
-//                Trabajo trabajo = new Trabajo(iterador.next());
-                System.out.println ("Indique accion: ");
-
-                if (opcion == 0) metodos.borrarTfg(iteradorTfg.next().getIdTfgM()); 
-                
- //               else metodos.modificarTFG(iteradorTfg.next().getIdTfgM());
-                else cambiarProfesorTfg((iteradorTfg.next().getIdTfgM(), (iteradorTfg.next().getIdProfesorM() ) {
-                
-            }
-            }
-                
-            profesor.setEstadoM(false);
-            metodos.modificarProfesor(profesor);
-            trazas = false;
-            System.out.println( "Profesor con email " +aux+"dado de baja");
-        }
-        else {
-        if (trazas) {
-            System.out.println("OJO" + profesor.getIdProfesorM());
-        }
-        }
-    }
-    private int menuCambioTfg(int opcion) {
-        String captura;
-//*
-            for (int i = 0; i < 24; i++) {
-            System.out.println("");
-        }
-
-        System.out.println("|--------------------------------------------------|");
-        System.out.println("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
-        System.out.println("|--------------------------------------------------|");
-
-        System.out.println("			 MENU CAMBIO TFG");
-        System.out.println("    1.- Borrar TFG");
-        System.out.println("    2.- Reasignar Profesor de TFG ");
-
-        System.out.println("    0.- SALIR");
-//*/
-//            do {
-            for (int i = 0; i < 3; i++) {
-                System.out.println("");
-            }
-            System.out.println("    Seleccione una opcion:  ");
-
-            do {
-                captura = sc.nextLine();
-                if (!validacion.getInt(captura, 0, 2)) {
-                    System.out.print("Opcion no valida, seleccione otra:");
-                }
-            } while (!validacion.getInt(captura, 0, 2));
-
-            opcion = Integer.parseInt(captura);
-//            } while (opcion != 0);
-    return opcion;    
-  }
-    
     /**
      * funcion que muestra por pantalla la info de un trabajo.
      *
@@ -903,14 +619,11 @@ public class Interfaz {
      */
     private void mostrarTFG(TFG trabajo, Profesor profe) {
         String aux;
-        for (int i = 0; i < 24; i++) {
-        }
-        System.out.println("");
-        System.out.println("DETALLES DEL PROYECTO:");
-        System.out.println("");
-        System.out.println("TITULO:" + trabajo.getTituloM());
-        System.out.println("Descripcion:" + trabajo.getDescripcionM());
-        System.out.println("TUTOR:" + profe.getNombreM());
+
+        System.out.println("\nDETALLES DEL PROYECTO:\n");
+        System.out.println("TÍTULO: " + trabajo.getTituloM());
+        System.out.println("DESCRIPCIÓN: " + trabajo.getDescripcionM());
+        System.out.println("TUTOR: " + profe.getNombreM());
     }
 
     /**
@@ -918,63 +631,86 @@ public class Interfaz {
      */
     private void aniadirTFG() {
         String aux;
-        int idProfesor, contador;
+        int idProfesor;
         int j = -1;
+        boolean continuar = false;
+        boolean salir = false;
         TFG trab = new TFG();
-        for (int i = 0; i < 24; i++) {
-            System.out.println("");
-        }
-        System.out.print("TITULO:");
-        aux = sc.nextLine();
-        trab.setTituloM(aux);
 
-        for (int i = 0; i < 24; i++) {
-            System.out.println("");
-        }
-
-        System.out.print("DESCRIPCION:");
-        aux = sc.nextLine();
-        trab.setDescripcionM(aux);
-
-        for (int i = 0; i < 24; i++) {
-            System.out.println("");
-        }
-
-        System.out.println("PROFESOR:");
-        System.out.println("");
-        System.out.println("0- Profesor existente");
-        System.out.println("1- Nuevo profesor");
-
+        System.out.println("TÍTULO: ");
         do {
             aux = sc.nextLine();
-            if (!validacion.getInt(aux, 0, 1)) {
-                System.out.print("Opcion no valida, seleccione otra:");
+            if (!validacion.getString(1, 45, aux)) {
+                System.out.println("Título no válido, introduzca otro: ");
             }
-        } while (!validacion.getInt(aux, 0, 1));
-        j = Integer.parseInt(aux);
-        if (j == 0) {
-            ArrayList<Profesor> profesores = new ArrayList<Profesor>();
-            metodos.obtenerProfesores(profesores);
-            if (!profesores.isEmpty()) {
-                Profesor profe = this.mostarProfesores(profesores);
-                trab.setIdProfesorM(profe.getIdProfesorM());
-                metodos.aniadirTfg(trab);
-            } else {
-                System.out.println("Lista vacia...");
+        } while (!validacion.getString(1, 45, aux));
+        trab.setTituloM(aux);
+
+        System.out.println("DESCRIPCIÓN: ");
+        do {
+            aux = sc.nextLine();
+            if (!validacion.getString(0, 300, aux)) {
+                System.out.println("Descripción no válida, introduzca otro: ");
             }
-        } else if (j == 1) {
-            idProfesor = aniadirProfesor();
-            trab.setIdProfesorM(idProfesor);
-            int idtfg = metodos.aniadirTfg(trab);
-            if (trazas) {
-                System.out.println("OJO" + idProfesor);
-                System.out.println("OJO tfg" + idtfg);
+        } while (!validacion.getString(0, 300, aux));
+        trab.setDescripcionM(aux);
+
+        do {
+            System.out.println("PROFESOR:\n");
+            System.out.println("\t[1] Profesor existente");
+            System.out.println("\t[2] Nuevo profesor");
+            System.out.println("\t[0] SALIR");
+
+            do {
+                aux = sc.nextLine();
+                if (!validacion.getInt(aux, 0, 2)) {
+                    System.out.println("Opción no válida, seleccione otra:");
+                }
+            } while (!validacion.getInt(aux, 0, 2));
+            j = Integer.parseInt(aux);
+            if (j == 1) {
+                ArrayList<Profesor> profesores = new ArrayList<Profesor>();
+                metodos.obtenerProfesores(profesores);
+                if (!profesores.isEmpty()) {
+                    Profesor profe = this.mostarProfesores(profesores);
+                    trab.setIdProfesorM(profe.getIdProfesorM());
+                    continuar = true;
+                } else {
+                    System.out.println("No hay profesores almacenados.");
+                }
+            } else if (j == 2) {
+                idProfesor = aniadirProfesor();
+                trab.setIdProfesorM(idProfesor);
+                continuar = true;
+            } else if (j == 0) {
+                continuar = true;
+                salir = true;
+            }
+        } while (!continuar);
+
+        if (!salir) {
+            trab.setIdTfgM(metodos.aniadirTfg(trab));
+
+            System.out.println("¿Deseas asignar un alumno?");
+            System.out.println("\t[1] Sí");
+            System.out.println("\t[0] No");
+
+            do {
+                aux = sc.nextLine();
+                if (!validacion.getInt(aux, 0, 1)) {
+                    System.out.println("Opción no válida, seleccione otra:");
+                }
+            } while (!validacion.getInt(aux, 0, 1));
+            j = Integer.parseInt(aux);
+            if (j == 1) {
+                asignarAlumno(trab);
             }
         }
+
     }
 
     /**
-     * Funcion que implementa la funcionalidad del menu otras opciones
+     * Función que implementa la funcionalidad del menu otras opciones
      * apoyandose en la clase Metodos.
      */
     private void menuOtrasOpciones() {
@@ -983,35 +719,35 @@ public class Interfaz {
         do {
 
             mostrarOO();
-            for (int i = 0; i < 3; i++) {
-                System.out.println("");
-            }
-            System.out.println("    Seleccione una opcion:  ");
-            /*CAPTURAR*/
-
+            System.out.println("\n\tSeleccione una opción:");
             do {
                 captura = sc.nextLine();
-                if (!validacion.getInt(captura, 0, 8)) {
-                    System.out.print("Opcion no valida, seleccione otra:");
+                if (!validacion.getInt(captura, 0, 7)) {
+                    System.out.print("Opción no válida, seleccione otra:");
                 }
-            } while (!validacion.getInt(captura, 0, 8));
+            } while (!validacion.getInt(captura, 0, 7));
             opcionOO = Integer.parseInt(captura);
             switch (opcionOO) {
                 case 1:
+                    this.modificarTFG();
                     break;
                 case 2:
+                    System.out.println("En desarrolo...");
                     break;
                 case 3:
+                    System.out.println("En desarrolo...");
                     break;
                 case 4:
+                    System.out.println("En desarrolo...");
                     break;
                 case 5:
+                    this.modificarProfesor();
                     break;
                 case 6:
+                    this.borrarProfesor();
                     break;
                 case 7:
-                    break;
-                case 8:
+                    System.out.println("En desarrolo...");
                     break;
                 case 0:
                     break;
@@ -1023,199 +759,68 @@ public class Interfaz {
      * Funcion que muestra las opiones del menu otras opciones
      */
     private void mostrarOO() {
-        for (int i = 0; i < 24; i++) {
-            System.out.println("");
-        }
         System.out.println("|--------------------------------------------------|");
-        System.out.println("|--			     	Otras Opciones               --|");
+        System.out.println("|-          	Otras Opciones                -|");
         System.out.println("|--------------------------------------------------|");
 
-        System.out.println("    1.- Modificar TFG");
-        System.out.println("    2.- Borrar un TFG");
-        System.out.println("    3.- Modificar Convocatoria");
-        System.out.println("    4.- Dar de baja una Convocatoria");
-        System.out.println("    5.- Modificar un profesor");
-        System.out.println("    6.- Dar de baja un profesor");
-        System.out.println("    7.- Modificar un alumno");
-        System.out.println("    8.- Dar de baja un alumno");
-        System.out.println("\n    0.- MENU PRINCIPAL");
-    }
-
-    private void modificatTFG() {
-        ArrayList<TFG> tfgLista = new ArrayList<TFG>();
-        ArrayList<Profesor> profesorLista = new ArrayList<Profesor>();
-        int contador, opcion, opcionCampos = 0;
-        String captura;
-        TFG tfg = new TFG();
-        Profesor prof = new Profesor();
-
-        metodos.obtenerTFGs(tfgLista);
-
-        if (!tfgLista.isEmpty()) {
-
-            Iterator<TFG> iterTfg = tfgLista.iterator();
-            contador = 0;
-
-            while (iterTfg.hasNext()) {
-                tfg = iterTfg.next();
-                prof = metodos.obtenerProfesor(tfg);
-                System.out.println("");
-                System.out.println("DETALLES DEL PROYECTO[" + (contador + 1) + "]");
-                System.out.println("");
-                System.out.print("Titulo: " + tfg.getTituloM());
-                System.out.print(" Tutor:" + prof.getNombreM());
-                System.out.print("\nDescripcion:" + tfg.getDescripcionM());
-
-                contador++;
-            }
-
-            if (contador > 0) {
-                System.out.println("Seleciona el TFG que deseas modificar: \n[0] Para salir");
-                do {
-                    captura = sc.nextLine();
-                    if (!validacion.getInt(captura, 0, contador - 1)) {
-                        System.out.print("Opcion no valida, seleccione otra:");
-                    }
-                } while (!validacion.getInt(captura, 0, contador - 1));
-                opcion = Integer.parseInt(captura);
-
-                tfg = tfgLista.get(opcion);
-
-                do {
-
-                    System.out.println("Selecciona elemento a Modificar:");
-                    System.out.println("[1]Profesor");
-                    System.out.println("[2]Titulo");
-                    System.out.println("[3]Descripcion");
-                    System.out.println("[4]Finalizado");
-                    System.out.println("\n[0] Salir");
-
-                    do {
-                        captura = sc.nextLine();
-                        if (!validacion.getInt(captura, 0, 4)) {
-                            System.out.print("Opcion no valida, seleccione otra:");
-                        }
-                    } while (!validacion.getInt(captura, 0, 4));
-
-                    opcionCampos = Integer.parseInt(captura);
-
-                    switch (opcionCampos) {
-                        case 1:
-                            System.out.print("Profesor actual: " + prof.getNombreM());
-                            System.out.print("Reasignar: ");
-                            System.out.print("1- Profesor existente");
-                            System.out.print("2- Nuevo profesor");
-                            System.out.print("0- Salir");
-
-                            do {
-                                captura = sc.nextLine();
-                                if (!validacion.getInt(captura, 0, 2)) {
-                                    System.out.print("Opcion no valida, seleccione otra:");
-                                }
-                            } while (!validacion.getInt(captura, 0, 2));
-
-                            opcionCampos = Integer.parseInt(captura);
-
-                            if (opcionCampos == 1) {
-                                metodos.obtenerProfesores(profesorLista);
-                                if (!profesorLista.isEmpty()) {
-                                    contador = 1;
-                                    Iterator<Profesor> iterProfe = profesorLista.iterator();
-                                    while (iterProfe.hasNext()) {
-                                        prof = iterProfe.next();
-                                        System.out.println("[" + contador + "] Nombre: " + prof.getNombreM());
-                                    }
-
-                                    do {
-                                        captura = sc.nextLine();
-                                        if (!validacion.getInt(captura, 0, contador)) {
-                                            System.out.print("Opcion no valida, seleccione otra:");
-                                        }
-                                    } while (!validacion.getInt(captura, 0, contador));
-
-                                    prof = profesorLista.get(Integer.parseInt(captura) - 1);
-                                }
-                            } else if (opcionCampos == 2) {
-                                tfg.setIdProfesorM(this.aniadirProfesor());
-                            }
-                            if (opcionCampos != 0) {
-                                tfg.setIdProfesorM(prof.getIdProfesorM());
-
-                                metodos.modificarTFG(tfg);
-                            }
-                            break;
-                        case 2:
-                            System.out.print("Titulo actual: " + tfg.getTituloM() + "Titulo nuevo:");
-                            do {
-                                captura = sc.nextLine();
-                                if (!validacion.getString(3, captura)) {
-                                    System.out.print("El titulo debe contener al menos 3 caracteres");
-                                }
-                            } while (!validacion.getString(3, captura));
-
-                            tfg.setTituloM(captura);
-                            metodos.modificarTFG(tfg);
-                            break;
-                        case 3:
-                            System.out.print("Descripcion actual:\n" + tfg.getDescripcionM() + "\nTitulo nuevo:");
-                            captura = sc.nextLine();
-                            tfg.setTituloM(captura);
-                            metodos.modificarTFG(tfg);
-                            break;
-                        case 4:
-                            if (!tfg.getFinalizadoM()) {
-                                System.out.print("Estado actual: No Finalizado \n[1]Para marcarlo como finalizado\n[0]Salir");
-
-                                do {
-                                    captura = sc.nextLine();
-                                    if (!validacion.getInt(captura, 0, 1)) {
-                                        System.out.print("Opcion no valida, seleccione otra:");
-                                    }
-                                } while (!validacion.getInt(captura, 0, 1));
-                                if (Integer.parseInt(captura) == 1) {
-                                    tfg.setFinalizadoM(true);
-                                    metodos.modificarTFG(tfg);
-                                }
-                            } else {
-                                System.out.print("Opcion no valida el tfg está finalizado, seleccione otra:");
-                            }
-                            break;
-                        case 0:
-                            break;
-                    }
-                } while (opcionCampos != 0);
-
-            }
-        }
+        System.out.println("\t[1] Modificar TFG");
+        System.out.println("\t[2] Borrar un TFG");
+        System.out.println("\t[3] Modificar convocatoria");
+        System.out.println("\t[4] Dar de baja una convocatoria");
+        System.out.println("\t[5] Modificar un profesor");
+        System.out.println("\t[6] Dar de baja un profesor");
+        System.out.println("\t[7] Modificar un alumno");
+        System.out.println("\n\t[0] MENÚ PRINCIPAL");
     }
 
     private int aniadirProfesor() {
         String aux;
         Profesor prof = new Profesor();
-        System.out.print("Nombre:");
+        System.out.println("NOMBRE: ");
         aux = sc.nextLine();
         prof.setNombreM(aux);
-        System.out.print("Primer Apellido:");
+        System.out.println("PRIMER APELLIDO: ");
         aux = sc.nextLine();
         prof.setApe1M(aux);
-        System.out.print("Segundo Apellido");
+        System.out.println("SEGUNDO APELLIDO: ");
         aux = sc.nextLine();
         prof.setApe2M(aux);
-        System.out.print("email:");
+        System.out.println("EMAIL: ");
         do {
             aux = sc.nextLine();
             if (!validacion.validarEmail(aux)) {
-                System.out.print("Opcion no valida, seleccione otra:");
+                System.out.println("Opción no válida, seleccione otra:");
             }
         } while (!validacion.validarEmail(aux));
         prof.setEmailProfesorM(aux);
-        System.out.print("Despacho:");
+        System.out.println("DESPACHO: ");
         aux = sc.nextLine();
         prof.setDespachoM(aux);
+         prof.setEstadoM(true);
         return metodos.aniadirProfesor(prof);
     }
 
-    private void modificatProfesor() {
+    private Profesor mostarProfesores(ArrayList<Profesor> lista) {
+        int i = 0, k = -1;
+        String aux;
+        System.out.println("Listado de profesores:");
+
+        do {
+            System.out.println("[" + (i + 1) + "] " + lista.get(i).getNombreM());
+            i++;
+        } while (i < lista.size());
+        System.out.println("\nSeleccione un profesor:");
+        do {
+            aux = sc.nextLine();
+            if (!validacion.getInt(aux, 1, lista.size())) {
+                System.out.print("Opción no válida, seleccione otra:");
+            }
+        } while (!validacion.getInt(aux, 1, lista.size()));
+        k = Integer.parseInt(aux);
+        return lista.get(k - 1);
+    }
+
+    private void modificarProfesor() {
         ArrayList<Profesor> profesorLista = new ArrayList<Profesor>();
         int contador, opcion, opcionCampos = 0;
         String captura, estado, aux;
@@ -1375,200 +980,288 @@ public class Interfaz {
         }
     }
 
-    private Profesor mostarProfesores(ArrayList<Profesor> lista) {
-        int i = 0, k = -1;
+    private void modificarTFG() {
+        ArrayList<TFG> tfgLista = new ArrayList<TFG>();
+        ArrayList<Profesor> profesorLista = new ArrayList<Profesor>();
+        int contador, opcion, opcionCampos = 0;
+        String captura;
+        TFG tfg = new TFG();
+        Profesor prof = new Profesor();
+
+        metodos.obtenerTFGs(tfgLista);
+
+        if (!tfgLista.isEmpty()) {
+
+            Iterator<TFG> iterTfg = tfgLista.iterator();
+            contador = 0;
+
+            while (iterTfg.hasNext()) {
+                tfg = iterTfg.next();
+                prof = metodos.obtenerProfesor(tfg);
+                System.out.println("");
+                System.out.println("DETALLES DEL PROYECTO[" + (contador + 1) + "]");
+                System.out.println("");
+                System.out.print("Titulo: " + tfg.getTituloM());
+                System.out.print(" Tutor:" + prof.getNombreM());
+                System.out.print("\nDescripcion:" + tfg.getDescripcionM());
+
+                contador++;
+            }
+
+            if (contador > 0) {
+                System.out.println("Seleciona el TFG que deseas modificar: \n[0] Para salir");
+                do {
+                    captura = sc.nextLine();
+                    if (!validacion.getInt(captura, 0, contador - 1)) {
+                        System.out.print("Opcion no valida, seleccione otra:");
+                    }
+                } while (!validacion.getInt(captura, 0, contador - 1));
+                opcion = Integer.parseInt(captura);
+
+                tfg = tfgLista.get(opcion);
+
+                do {
+
+                    System.out.println("Selecciona elemento a Modificar:");
+                    System.out.println("[1]Profesor");
+                    System.out.println("[2]Titulo");
+                    System.out.println("[3]Descripcion");
+                    System.out.println("[4]Finalizado");
+                    System.out.println("\n[0] Salir");
+
+                    do {
+                        captura = sc.nextLine();
+                        if (!validacion.getInt(captura, 0, 4)) {
+                            System.out.print("Opcion no valida, seleccione otra:");
+                        }
+                    } while (!validacion.getInt(captura, 0, 4));
+
+                    opcionCampos = Integer.parseInt(captura);
+
+                    switch (opcionCampos) {
+                        case 1:
+                            /*  Jm: Modificados los print por println
+                            
+                            */
+                            System.out.println("Profesor actual: " + prof.getNombreM());
+                            System.out.println("Reasignar: ");
+                            System.out.println("1- Profesor existente");
+                            System.out.println("2- Nuevo profesor");
+                            System.out.println("0- Salir");
+
+                            do {
+                                captura = sc.nextLine();
+                                if (!validacion.getInt(captura, 0, 2)) {
+                                    System.out.print("Opcion no valida, seleccione otra:");
+                                }
+                            } while (!validacion.getInt(captura, 0, 2));
+
+                            opcionCampos = Integer.parseInt(captura);
+
+                            if (opcionCampos == 1) {
+                                metodos.obtenerProfesores(profesorLista);
+                                if (!profesorLista.isEmpty()) {
+                                    contador = 1;
+                                    Iterator<Profesor> iterProfe = profesorLista.iterator();
+                                    while (iterProfe.hasNext()) {
+                                        prof = iterProfe.next();
+                                        System.out.println("[" + contador + "] Nombre: " + prof.getNombreM());
+                                    }
+
+                                    do {
+                                        captura = sc.nextLine();
+                                        if (!validacion.getInt(captura, 0, contador)) {
+                                            System.out.print("Opcion no valida, seleccione otra:");
+                                        }
+                                    } while (!validacion.getInt(captura, 0, contador));
+
+                                    prof = profesorLista.get(Integer.parseInt(captura) - 1);
+                                }
+                            } else if (opcionCampos == 2) {
+                                tfg.setIdProfesorM(this.aniadirProfesor());
+                            }
+                            if (opcionCampos != 0) {
+                                tfg.setIdProfesorM(prof.getIdProfesorM());
+
+                                metodos.modificarTFG(tfg);
+                            }
+                            break;
+                        case 2:
+                            System.out.print("Titulo actual: " + tfg.getTituloM() + "Titulo nuevo:");
+                            do {
+                                captura = sc.nextLine();
+                                if (!validacion.getString(3, 45, captura)) {
+                                    System.out.print("El titulo debe contener al menos 3 caracteres");
+                                }
+                            } while (!validacion.getString(3, 45, captura));
+
+                            tfg.setTituloM(captura);
+                            metodos.modificarTFG(tfg);
+                            break;
+                        case 3:
+                            System.out.print("Descripcion actual:\n" + tfg.getDescripcionM() + "\nTitulo nuevo:");
+                            captura = sc.nextLine();
+                            tfg.setTituloM(captura);
+                            metodos.modificarTFG(tfg);
+                            break;
+                        case 4:
+                            if (!tfg.getFinalizadoM()) {
+                                System.out.print("Estado actual: No Finalizado \n[1]Para marcarlo como finalizado\n[0]Salir");
+
+                                do {
+                                    captura = sc.nextLine();
+                                    if (!validacion.getInt(captura, 0, 1)) {
+                                        System.out.print("Opcion no valida, seleccione otra:");
+                                    }
+                                } while (!validacion.getInt(captura, 0, 1));
+                                if (Integer.parseInt(captura) == 1) {
+                                    tfg.setFinalizadoM(true);
+                                    metodos.modificarTFG(tfg);
+                                }
+                            } else {
+                                System.out.print("Opcion no valida el tfg está finalizado, seleccione otra:");
+                            }
+                            break;
+                        case 0:
+                            break;
+                    }
+                } while (opcionCampos != 0);
+
+            }
+        }
+    }
+    
+/* Jm    
+*/
+    private void borrarProfesor() {
         String aux;
-        for (int j = 0; j < 24; j++) {
+        int opcion = -1;
+        boolean result;
+        Iterator<TFG> iteradorTfg;
+        ArrayList<TFG> tfgList = new ArrayList<TFG>();
+        ArrayList<Profesor> listaProfesores = new ArrayList<Profesor>();
+//        System.out.println("Borrando profesor ");
+        metodos.obtenerProfesores(listaProfesores);                                         // Obtiene lista profesores         
+        if (!listaProfesores.isEmpty()) {
+            Profesor profesor = this.mostarProfesores(listaProfesores);                     // Muestra lista de profesores y pone en profesor el elegido       
+            metodos.obtenerTFGProfesor(tfgList, profesor);                                  // Obtiene los TFGs del profesor elegido
+ //           iteradorTfg = tfgList.iterator();
+
+                if (!tfgList.isEmpty()) {                                                   // profesor tiene TFGs asignados                                                                              
+                    opcion = this.menuCambioTfg();                                          // Ofrece opciones al usuario
+                    while (opcion != 0 && !tfgList.isEmpty()) {                               // Presenta los TFGs restantes del profesor
+   
+                        if (opcion == 3) {
+                            result = metodos.borrarTodosTfg(profesor);                          // Opcion Rapida de menu(3). Borra los TFGs restantes
+                            opcion = 0;                                                         //  Salir del bucle
+                        } 
+                        else if (opcion == 1) {                                                 // Borramos el Tfg elegido
+                            metodos.borrarTfg(tfgList.get(0).getIdTfgM());
+                        }
+                        else {
+                            TFG tfg = metodos.obtenerTFG (tfgList.get(0).getIdTfgM());          // Cambiamos de profesor al Tfg
+                            System.out.println ("El trabajo de titulo: " +tfg.getTituloM());
+                            System.out.println(" Esta asignado a: " + profesor.getEmailProfesorM());
+                            cambiarProfesorATfg(tfg, profesor);                             // Cambia el profesor titular del TFG
+                        }
+                        opcion = this.menuCambioTfg();
+                        metodos.obtenerTFGProfesor(tfgList, profesor);
+                    }
+                }
+            else {
+                metodos.obtenerTFGProfesor(tfgList, profesor);
+                if (tfgList.isEmpty()) {                                                     // Profesor NO tiene trabajos asignados
+                    profesor.setEstadoM(false);                                                 // Lo damos de baja
+                    result = metodos.modificarProfesor(profesor);
+                    System.out.println("Profesor con email: " + profesor.getEmailProfesorM() + " dado de baja");
+                }
+            }
+                
+
+                //result = metodos.borrarProfesor(profesor);                              // borramos profesor sin tfgs
+                
+            } else { 
+                System.out.println ("No hay profesores ");
+            //      } else if (trazas) {
+            //System.out.println("OJO" + profesor.getIdProfesorM());
+            }   
+        }
+    
+     private int menuCambioTfg() {
+        String captura;
+        int opcion;
+        for (int i = 0; i < 24; i++) {
             System.out.println("");
         }
 
-        System.out.println("Listado de Profesores:");
-
+        System.out.println("|--------------------------------------------------|");
+        System.out.println("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
+        System.out.println("|--------------------------------------------------|");
+        System.out.println("			 MENU CAMBIO TFG");
+        System.out.println("    1.- Borrar TFG del profesor");
+        System.out.println("    2.- Reasignar Profesor de TFG ");
+        System.out.println("    3.- Borrar Todos los TFG de profesor ");
+        
+        System.out.println("    0.- SALIR");
+        for (int i = 0; i < 3; i++) {
+            System.out.println("");
+        }
+        System.out.println("    Seleccione una opcion:  ");
         do {
-            System.out.println(i + 1 + "-   " + lista.get(i).getNombreM());
-            i++;
-        } while (i < lista.size());
-        System.out.println("");
-        System.out.println("Selecione un Profesor:");
-        do {
-            aux = sc.nextLine();
-            if (!validacion.getInt(aux, 1, lista.size())) {
+            captura = sc.nextLine();
+            if (!validacion.getInt(captura, 0, 2)) {
                 System.out.print("Opcion no valida, seleccione otra:");
             }
-        } while (!validacion.getInt(aux, 1, lista.size()));
-        k = Integer.parseInt(aux);
-        return lista.get(k - 1);
-    }
-
-    /*
-    Jm. 
-    */
-    private void cambiarProfesorTfg(int idTfg, int idProfesor) {
-        ArrayList<TFG> lista = new ArrayList<TFG>();      
-        metodos.obtenerTFGProfesor(lista, idProfesor);
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-=======
-    public void opcion5() {
-        System.out.println("------------en progreso------------");
-        /*Scanner sc = new Scanner(System.in);
-        int opcion5_1, opcion5_2;
-        boolean modificoCorrecto = false;
-        boolean otraVez5 = false;
-        do {
-            do {
-                System.out.println("Que modificacion quieres realizar:");
-                System.out.println("    1- Añadir alumno.");
-                System.out.println("    2- Borrar alumno.");
-                System.out.print("Opción deseada: ");
-                opcion5_1 = sc.nextInt();
-                switch (opcion5_1) {
-                    case 1:
-                        //pedir datos del TFG al que hay que añadir alumno, pedir datos del alumno a añadir y añadirlo;
-                        //sec.insertarAlumno();
-                        modificoCorrecto = true;
-                        break;
-                    case 2:
-                        //pedir datos del TFG al que hay que borrar alumno, poner el apartado alumno a null;
-                        modificoCorrecto = true;
-                        break;
-                    default:
-                        modificoCorrecto = false;
-                        System.out.println("Opción no valida.");
-                        break;
-                }
-            } while (!modificoCorrecto);
-            System.out.println("Quieres modificar mas TFG:");
-            System.out.println("    1- Si.");
-            System.out.println("    2- No.");
-            opcion5_2 = sc.nextInt();
-            switch (opcion5_2) {
-                case 1:
-                    otraVez5 = false;
-                    break;
-                case 2:
-                    otraVez5 = true;
-                    break;
-                default:
-                    otraVez5 = false;
-                    System.out.println("Opción no valida.");
-                    break;
-            }
-        } while (!otraVez5);*/
-    }
-    public void opcion33() {
-        sen.insertarDatosIniciales();
-        sen.listarDatosIniciales();
-    }
-    public void mostrarInterfaz() throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        int opcionMenu = -1;
-       
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println ("|-- Aplicación para la Gestíón de Trabajos T.F.G --|");
-        System.out.println ("|--------------------------------------------------|");
-        System.out.println();
-        System.out.println();
-        System.out.println(" |------------------- MENU PRINCIPAL ----------------|");
-        do {
-
-            System.out.println("    1.- Altas.");
-            System.out.println("    2.- Bajas.");
-            System.out.println("    3.- Modificaciones.");
-            System.out.println("    4.- Consultas.");
-            System.out.println("    5.- Informes.");
-            System.out.println("   33.- Insertar datos iniciales");
-            System.out.println("");
-            System.out.println("");
-            
-            /* La siguiente opcion debera ocultarse a la hora de hacer la presentación al cliente.
-            **
-            */       
-
-            
-            System.out.println();
-            System.out.println("    0.- Finalizar.");
-            System.out.print("Opción deseada: ");
-            try {
-                opcionMenu = sc.nextInt();
-
-            } catch (Exception e) {
-                System.out.println("[ERROR]");
-                sc.next();
-                opcionMenu = 0;
-            }
-
-            switch (opcionMenu) {
-                case 1:
-                    //funcion mostrar lista
-                    menuAltas();
-                    break;
-                case 2:
-                    //funcion añadir profesor
-                    menuBajas();
-                    break;
-                case 3:
-                    //funcion borrar un TFG
-//                    menuModificaciones();
-                    break;
-                case 4:
-                    //funcion buscar TFG
-//                    menuConsultas();
-                    break;
-                 case 5:
-                    //funcion buscar TFG
-                    menuInformes();
-                    break;
-                    
-                case 33:
-                    opcion33();
-                default:
-                    System.out.println("Opción no valida.");
-                    break;
-            }
-
-        } while (opcionMenu != 0);
-        sen.cerrar();
+        } while (!validacion.getInt(captura, 0, 2));
+        opcion = Integer.parseInt(captura);
+        return opcion;
     }
     
-    //*
-    private void insertarProfesor() throws SQLException {
-        boolean result;
-        Scanner sc = new Scanner(System.in);
-        String nombre, ape1, ape2, email;
-        int desp = 0;
-        boolean repetido = false;
-        boolean continuar = true;
-        String opcion = "0";
-
+    private void cambiarProfesorATfg(TFG tfg, Profesor prof) {
+        String captura;
+        int opcionCampos;
+        int contador;
+        ArrayList<Profesor> profesorLista = new ArrayList<Profesor>();
+        System.out.println("Profesor actual: " + prof.getNombreM());
+        System.out.println("Reasignar: ");
+        System.out.println("1- Profesor existente");
+        System.out.println("2- Nuevo profesor");
+        System.out.println();
+        System.out.println("0- Salir");
         do {
-            System.out.println("******NUEVO PROFESOR******");
-            System.out.print("Introduce el nombre del profesor: ");
-            nombre = sc.nextLine();
-            System.out.print("Introduce el primer apellido: ");
-            ape1 = sc.nextLine();
-            System.out.print("Introduce el segundo apellido: ");
-            ape2 = sc.nextLine();
-            System.out.print("Introduce el email: ");
-            email = sc.nextLine();
-            System.out.print("Introduce el número de despacho(4 dígitos): ");
-            desp = sc.nextInt();
-            // Comprobar que el profesor no existe
-            result = sen.comprobarProfesor(email);
-            if (!result) {
-                sen.insertarProfesor(nombre, ape1, ape2, email, desp);
+            captura = sc.nextLine();
+            if (!validacion.getInt(captura, 0, 2)) {
+                System.out.print("Opcion no valida, seleccione otra:");
             }
-            else {
-                System.out.println("Error en la inserción de profesor. ");
-                System.out.println("Pulse para continuar .");
-                System.out.println("0 para salir .");
-            }    
-            opcion = sc.nextLine();
-                
+        } while (!validacion.getInt(captura, 0, 2));
+        opcionCampos = Integer.parseInt(captura);
+        if (opcionCampos == 1) {
+            metodos.obtenerProfesores(profesorLista);
+            if (!profesorLista.isEmpty()) {
+                contador = 1;
+                Iterator<Profesor> iterProfe = profesorLista.iterator();
+                while (iterProfe.hasNext()) {
+                    prof = iterProfe.next();
+                    System.out.println("[" + contador + "] Nombre: " + prof.getNombreM());
+                    
+                    contador++;                                                         // Jm He tenido que añadir esto
+                }
+                do {
+                    captura = sc.nextLine();
+                    if (!validacion.getInt(captura, 0, contador)) {
+                        System.out.print("Opcion no valida, seleccione otra:");
+                    }
+                } while (!validacion.getInt(captura, 0, contador));
+                prof = profesorLista.get(Integer.parseInt(captura) - 1);
+            }
+        } else if (opcionCampos == 2) {
+            tfg.setIdProfesorM(this.aniadirProfesor());
+        }
+        if (opcionCampos != 0) {
+            tfg.setIdProfesorM(prof.getIdProfesorM());
+            metodos.modificarTFG(tfg);
+        }
     }
-        while (opcion != "0");
-//*/
->>>>>>> Nuevo-enlace-a-base-de-datos(mio)
-    }
+    
+    
 }
-        

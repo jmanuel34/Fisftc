@@ -17,7 +17,7 @@ public class Metodos {
 
     private ResultSet rs;
     private Sentencias sent;
-    private static final boolean trazas = true;
+    private static final boolean trazas = false;
 
     public Metodos() {
         sent = new Sentencias();
@@ -175,25 +175,6 @@ public class Metodos {
         }
         return profesor;
     }
-    
-    public Profesor obtenerProfesor(String email) {
-        Profesor profesor = new Profesor();
-        if (sent.estaProfesor(email)!=null) {
-            try {
-                profesor.setIdProfesorM(rs.getInt(Profesor.idProfesor));             
-                profesor.setEmailProfesorM(rs.getString(Profesor.emailProfesor));
-                profesor.setNombreM(rs.getString(Profesor.nombre));
-                profesor.setApe1M (rs.getString(Profesor.ape1));
-                profesor.setApe2M(rs.getString(Profesor.ape2));
-                profesor.setDespachoM(rs.getString(Profesor.despacho));
-                profesor.setEstadoM(rs.getBoolean(Profesor.estado));
-            } catch (SQLException ex) {
-                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
-        }     
-        return profesor;
-    }
 
     /**
      * Devuelve un arraylist actualizado con los alumnos de la base de datos
@@ -290,16 +271,15 @@ public class Metodos {
      */
     public void obtenerConvocatoria(ArrayList<Convocatoria> conv, String anio) {
         if (!conv.isEmpty()) {
-            int contador = 0;
             Iterator<Convocatoria> iter = conv.iterator();
-            while (iter.hasNext()) {
-                if (!iter.next().getAnioM().contains(anio)) {
-                    conv.remove(contador);
+
+            for (int i = 0; i < conv.size(); i++) {
+                if (!conv.get(i).getAnioM().contains(anio)) {
+                    conv.remove(i);
                 }
-                contador++;
             }
-        }else{
-            System.out.println("convocaoria vacia");
+        } else {
+            System.out.println("convocatoria vacia");
         }
 
     }
@@ -485,6 +465,26 @@ public class Metodos {
         return exito;
     }
 
+    public boolean validarDefensa(Alumno alum, Convocatoria conv) {
+        boolean exito = false;
+
+        ArrayList<Defensa> def = new ArrayList<Defensa>();
+        this.obtenerDefensa(def);
+
+        for (int i = 0; i < def.size(); i++) {
+            if (def.get(i).getIdAlumnoM() == alum.getIdAlumnoM()
+                    && def.get(i).getIdTfgM() == alum.getIdtfgM()
+                    && def.get(i).getIdConvocatoriaM() == conv.getidConvocatoriaM()) {
+                exito = true;
+            }
+        }
+        return exito;
+    }
+    
+       //*/
+     /* Jm
+    
+     */
     public void obtenerTFGProfesor(ArrayList<TFG> lista, Profesor profesor) {
         lista.clear();
         rs = sent.obtenerTFGProfesor(profesor);
@@ -505,48 +505,47 @@ public class Metodos {
             }
         }
     }
-
-
-    void borrarTfg(int idTfgM) {
+    boolean borrarTodosTfg(Profesor profesor) {
+        return sent.borrarTodosTfg(profesor);
+        
+        
+    }
+    
+      /* Jm. Borra un Tfg por su identificador
+        @param int idTfg identificador de Trabajo
+    */
+      void borrarTfg(int idTfgM) {
         sent.borrarTfg(idTfgM);
     }
-    /*
-     Jm
-    */
-    void obtenerTFGs(int idTfg, int idProfesor) {
-   
-       
-       ArrayList<TFG> tfgLista = new ArrayList<TFG>();
-           tfgLista.clear();
-        String captura;
-        ResultSet rs;
-       rs =  sent.obtenerTFG(tfgLista, idTfg, idProfesor);
-
-        if (!tfgLista.isEmpty()) {
-
-            Iterator<TFG> iterTfg = tfgLista.iterator();
-       
-       
-        rs = sent.obtenerTFGProfesor(profesor);
+      
+      /* Jm
+      
+     */
+    public TFG obtenerTFG(int id) {
+        boolean encontrado = false;
+        rs = sent.obtenerTFG(id);
         try {
-            while(rs.next()) {
+            while (rs != null && rs.next()) {
                 tfg = new TFG();
                 tfg.setIdTfgM(rs.getInt(TFG.idTfg));
                 tfg.setIdProfesorM(rs.getInt(TFG.idProfesor));
                 tfg.setTituloM(rs.getString(TFG.titulo));
                 tfg.setDescripcionM(rs.getString(TFG.descripcion));
                 tfg.setFechaM(rs.getString(TFG.fecha));
-                tfg.setFinalizadoM(rs.getBoolean(TFG.finalizado));
-                lista.add(tfg);                    
+                tfg.setFinalizadoM(rs.getBoolean(TFG.finalizado));// ojo aqui al probar
+                encontrado = true;
             }
-        } catch (SQLException e) {
-          if (trazas) {
-              Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, e);
+        } catch (SQLException ex) {
+            if (trazas) {
+                Logger.getLogger(Metodos.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } 
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
+            if (!encontrado) {
+                tfg = new TFG();
+            }
 
-    
+        }
+        return tfg;
+
+    }
 
 }
