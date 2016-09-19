@@ -1,24 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fisftc;
 
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-/**
- *
- * @author Damian
- */
 public class Conexion {
 
     private static Connection conexion;
     private static ResultSet rs;
     private static Statement stat;
     private static boolean exito;
+    private static final boolean trazas = false;
 
     public Conexion() {
         conexion = null;
@@ -35,23 +27,29 @@ public class Conexion {
 
             exitoD = true;
         } catch (Exception e) {
-            System.out.println(e.toString());
+            if (trazas) {
+                System.out.println(e.toString());
+            }
         } finally {
             return exitoD;
         }
     }
 
-    public boolean crearDB() {
+    public boolean conectarDB() {
 
         try {
             if (this.driver()) {
                 conexion = DriverManager.getConnection(
                         "jdbc:derby:.\\DB\\Derby.DB;create=true");
-                System.out.println("Registro exitoso");
                 exito = true;
+                if (trazas) {
+                    System.out.println("Exito al conectar");
+                }
             }
         } catch (SQLException ex) {
-            System.out.println("SQLException: " + ex.getMessage());
+            if (trazas) {
+                System.out.println("SQLException: " + ex.getMessage());
+            }
         } finally {
             return exito;
         }
@@ -73,7 +71,9 @@ public class Conexion {
                     stat.executeUpdate(s);
                     conseguido = true;
                 } catch (SQLException ex) {
-                    Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+                    if (trazas) {
+                        Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         } finally {
@@ -96,7 +96,9 @@ public class Conexion {
                     stat = conexion.createStatement();
                     rs = stat.executeQuery(s);
                 } catch (SQLException ex) {
-                    Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+                    if (trazas) {
+                        Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         } finally {
@@ -117,7 +119,9 @@ public class Conexion {
                 stat.close();
             }
         } catch (SQLException ex) {
-            Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            if (trazas) {
+                Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
